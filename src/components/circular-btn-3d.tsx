@@ -19,27 +19,36 @@ export default function CircularBtn3D({
     textColor,
 }: CircularBtn3DProps) {
     return (
-        <div>
-            <button
-                className={cn(
-                    "outline-white rounded-full py-2 px-4 flex items-center justify-center z-1",
-                    `bg-${color} text-${textColor}`
-                )}
+        <div className="text-xl relative pb-2">
+            <div
+                className="absolute inset-0 w-fit h-fit selection:transform border border-white rounded-full flex outline-white mt-2 py-4 px-12 z-0"
+                style={{
+                    backgroundColor: `${color}80`, // Adds transparency to the color
+                }}
                 onClick={onClick}
             >
                 {Icon && (
-                    <span className="flex items-center justify-center">
-                        <Icon className={cn(``)} />
+                    <span className="flex items-center justify-center text-3xl mr-5">
+                        <Icon />
                     </span>
                 )}
-                <span className="ml-2">{text}</span>
-            </button>
-            <div
-                className={cn(
-                    "w-100 rounded-full outline-white absolute mt-3",
-                    `bg-${color}/50`
+                <span className="ml-2 whitespace-nowrap">{text}</span>
+            </div>
+            <button
+                className="relative border border-white rounded-full flex items-center justify-center py-4 px-12 z-10"
+                onClick={onClick}
+                style={{
+                    backgroundColor: color,
+                    color: textColor,
+                }}
+            >
+                {Icon && (
+                    <span className="flex items-center justify-center text-3xl mr-5">
+                        <Icon />
+                    </span>
                 )}
-            ></div>
+                <span className="ml-2 whitespace-nowrap">{text}</span>
+            </button>
         </div>
     );
 }
