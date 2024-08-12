@@ -1,0 +1,7 @@
+.login-bg {
+    background-image: url("/images/login-page-bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh; /* Ensure it covers the entire viewport */
+}
