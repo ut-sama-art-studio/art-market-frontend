@@ -14,7 +14,7 @@ export const NavBar = () => {
             className={cn(
                 "w-full h-fit z-10 flex justify-between items-center py-2 px-4",
                 isLoginPage
-                    ? "bg-transparent absolute px-12 py-8 text-white"
+                    ? "bg-transparent absolute px-12 py-8 text-white login-drop-in"
                     : "bg-secondary text-black"
             )}
         >
@@ -36,6 +36,9 @@ export const NavBar = () => {
                 </li>
                 <li>
                     <Link href="/login">Login</Link>
+                </li>
+                <li>
+                    <Link href="/about-us">About Us</Link>
                 </li>
             </ul>
         </nav>

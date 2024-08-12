@@ -10,7 +10,7 @@ export default function ArtMarketTextLogo({
         <>
             <h1
                 className={cn(
-                    "hidden md:block font-light -tracking-widest text-black text-4xl",
+                    "hidden md:block font-light -tracking-widest text-black text-4xl space-y-1",
                     className
                 )}
             >

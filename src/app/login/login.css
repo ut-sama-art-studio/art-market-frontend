@@ -1,7 +1,80 @@
+@keyframes loginDropIn {
+    0% {
+        transform: translateY(-50%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.login-drop-in {
+    opacity: 0;
+    animation: loginDropIn 0.5s ease-out forwards;
+    animation-delay: 1s;
+}
+
+@keyframes loginSlideInLeft {
+    0% {
+        transform: translateX(-40%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+.login-slide-in-left {
+    opacity: 0;
+    animation: loginSlideInLeft 0.5s ease-out forwards;
+    animation-delay: 1.2s;
+}
+.login-delay-1 {
+    animation-delay: 1.4s;
+}
+.login-delay-2 {
+    animation-delay: 1.6s;
+}
+
+
+
+@keyframes loginZoomOut {
+    0% {
+        background-size: 140%;
+    }
+    99% {
+        background-size: 100%;
+    }
+    100% {
+        background-size: cover;
+    }
+}
+.login-zoom-out-bg {
+    animation: loginZoomOut 1.2s ease-in-out forwards;
+    animation-delay: 0.1s;
+}
 .login-bg {
+    background-size: 140%;
     background-image: url("/images/login-page-bg.png");
-    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    min-height: 100vh; /* Ensure it covers the entire viewport */
+    min-height: 100vh;
+    background-size: none;
+}
+
+@media (max-width: 1200px) {
+    @keyframes loginZoomOut {
+        0% {
+            background-size: auto 140%;
+        }
+        99% {
+            background-size: auto 100%;
+        }
+        100% {
+            background-size: cover;
+        }
+    }
+    .login-bg {
+        background-size: auto 140%;
+    }
 }
