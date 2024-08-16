@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { cn } from "@/lib/utils";
 
 type Btn3DLgProps = {
     onClick: () => void;
@@ -11,7 +10,7 @@ type Btn3DLgProps = {
     textColor: string;
 };
 
-export default function Btn3DLg({
+export default function Btn3dLg({
     onClick,
     Icon,
     text,

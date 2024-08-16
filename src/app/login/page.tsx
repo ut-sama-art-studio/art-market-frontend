@@ -3,16 +3,15 @@
 import React from "react";
 import "./login.css";
 import { useRouter } from "next/navigation";
-import CircularBtn3D from "@/components/btn-3d-lg";
+import Btn3dLg from "@/components/btn-3d-lg";
 import { BsDiscord } from "react-icons/bs";
 import { BsGoogle } from "react-icons/bs";
 import { discordLogin } from "@/services/auth/auth-service";
 
-export default function Login() {
+export default function LoginPage() {
     const router = useRouter();
 
     const discordLoginOnClick = async () => {
-        console.log("VERCEL");
         await discordLogin()
     };
 
@@ -32,7 +31,7 @@ export default function Login() {
 
                 <div className="space-y-4">
                     <div className="login-delay-1 login-slide-in-left">
-                        <CircularBtn3D
+                        <Btn3dLg
                             onClick={discordLoginOnClick}
                             text="Login with Discord"
                             Icon={BsDiscord}
@@ -41,7 +40,7 @@ export default function Login() {
                         />
                     </div>
                     <div className="login-delay-2 login-slide-in-left ">
-                        <CircularBtn3D
+                        <Btn3dLg
                             onClick={googleLoginOnClick}
                             text="Login with Google"
                             Icon={BsGoogle}
