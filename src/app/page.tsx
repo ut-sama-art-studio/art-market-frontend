@@ -2,48 +2,30 @@
 
 import React, { useEffect, useState } from "react";
 import { getQueryParam } from "@/lib/utils";
-import { getAuthToken, setAuthToken } from "@/services/auth/auth-service";
-import { gql } from "graphql-request";
-import { graphqlRequest } from "@/services/graphql/graphql-service";
+import { useAuth } from "@/context/auth-context";
 
 const HomePage: React.FC = () => {
-    const [userName, setUserName] = useState<string | null>(null);
+    const { user, login } = useAuth();
 
     useEffect(() => {
-        // Check if there is a token in the URL and save it
+        // check if there is a token in the URL and save it
         const token = getQueryParam("token");
         if (token) {
-            setAuthToken(token);
+            // remove token from url
             window.history.replaceState(
                 {},
                 document.title,
                 window.location.pathname
             );
+            login(token);
         }
-
-        const authToken = getAuthToken();
-        if (authToken) {
-            graphqlRequest(gql`
-                query Me {
-                    me {
-                        id
-                        name
-                        email
-                    }
-                }
-            `).then((user) => {
-                if (user) {
-                    setUserName(user.me.name);
-                }
-            });
-        }
-    }, []);
+    }, [user]);
 
     return (
         <main>
             <div>
-                {userName ? (
-                    <h1>Welcome, {userName}!</h1>
+                {user ? (
+                    <h1>Welcome, {user.name}!</h1>
                 ) : (
                     <h1>Not logged in!</h1>
                 )}

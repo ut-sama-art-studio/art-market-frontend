@@ -5,24 +5,28 @@ import { getAuthToken } from "../auth/auth-service";
 
 const endpoint = apiUrl + "/graphql";
 var graphQLClient = new GraphQLClient(endpoint, {
-    headers: {
-        authorization: `Bearer ${getAuthToken()}`,
-    },
+    headers: {},
 });
 
-export function graphqlUseToken(token: string) {
-    graphQLClient = new GraphQLClient(endpoint, {
-        headers: {
-            authorization: `Bearer ${token}`,
-        },
-    });
+export async function graphqlUseToken(token: string) {
+    if (token) {
+        graphQLClient.setHeader("Authorization", `Bearer ${token}`);
+    }
 }
 
-export async function graphqlRequest(gqlRequest: string): Promise<any | undefined> {
+export async function graphqlRequest(
+    gqlRequest: string,
+    variables?: Object
+): Promise<any> {
+    // const token = getAuthToken();
+    // if (token) {
+    //     graphQLClient.setHeader("Authorization", `Bearer ${token}`);
+    // }
+
     try {
-        const data = await graphQLClient.request<User>(gqlRequest);
-        console.log(data);
-        return data
+        const data = await graphQLClient.request(gqlRequest, variables);
+
+        return data;
     } catch (error) {
         if (error instanceof GraphQLError) {
             console.error("GraphQL Error:", error.message);
@@ -36,15 +40,7 @@ export async function graphqlRequest(gqlRequest: string): Promise<any | undefine
         } else {
             console.error("Unexpected Error:", error);
         }
-        return undefined;
-    }
-}
 
-interface User {
-    id: string;
-    name: string;
-    email?: string;
-    profilePicture?: string;
-    bio?: string;
-    role?: string;
+        return Promise.reject(error);
+    }
 }

@@ -1,5 +1,4 @@
 import { apiUrl } from "@/lib/configs";
-import { graphqlUseToken } from "../graphql/graphql-service";
 
 export async function discordLogin() {
     window.location.href = apiUrl + "/auth/discord/login";
@@ -12,8 +11,6 @@ export function getAuthToken() {
 
 export function setAuthToken(token: string) {
     localStorage.setItem("auth_token", token);
-    
-    graphqlUseToken(token);
 }
 
 export function removeAuthToken(): void {

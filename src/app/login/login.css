@@ -11,7 +11,7 @@
 .login-drop-in {
     opacity: 0;
     animation: loginDropIn 0.5s ease-out forwards;
-    animation-delay: 1s;
+    animation-delay: 0.8s;
 }
 
 @keyframes loginSlideInLeft {
@@ -27,54 +27,32 @@
 .login-slide-in-left {
     opacity: 0;
     animation: loginSlideInLeft 0.5s ease-out forwards;
-    animation-delay: 1.2s;
+    animation-delay: 1s;
 }
 .login-delay-1 {
-    animation-delay: 1.4s;
+    animation-delay: 1.2s;
 }
 .login-delay-2 {
-    animation-delay: 1.6s;
+    animation-delay: 1.4s;
 }
-
-
 
 @keyframes loginZoomOut {
     0% {
-        background-size: 140%;
-    }
-    99% {
-        background-size: 100%;
+        transform: scale(1.2);
     }
     100% {
-        background-size: cover;
+        transform: scale(1);
     }
 }
 .login-zoom-out-bg {
-    animation: loginZoomOut 1.2s ease-in-out forwards;
-    animation-delay: 0.1s;
-}
-.login-bg {
-    background-size: 140%;
-    background-image: url("/images/login-page-bg.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    background-size: none;
+    animation: loginZoomOut 1s ease-in-out forwards;
 }
 
-@media (max-width: 1200px) {
-    @keyframes loginZoomOut {
-        0% {
-            background-size: auto 140%;
-        }
-        99% {
-            background-size: auto 100%;
-        }
-        100% {
-            background-size: cover;
-        }
-    }
-    .login-bg {
-        background-size: auto 140%;
-    }
+.zoom-container {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position:absolute;
+    top: 0;
+    left: 0;
 }

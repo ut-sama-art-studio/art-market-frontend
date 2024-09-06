@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import "./login.css";
 import { useRouter } from "next/navigation";
 import Btn3dLg from "@/components/btn-3d-lg";
@@ -8,11 +9,13 @@ import { BsDiscord } from "react-icons/bs";
 import { BsGoogle } from "react-icons/bs";
 import { discordLogin } from "@/services/auth/auth-service";
 
+import loginBackground from "../../../public/images/login-page-bg.png";
+
 export default function LoginPage() {
     const router = useRouter();
 
     const discordLoginOnClick = async () => {
-        await discordLogin()
+        await discordLogin();
     };
 
     const googleLoginOnClick = () => {
@@ -20,7 +23,18 @@ export default function LoginPage() {
     };
     return (
         <>
-            <div className="login-bg top-0 login-zoom-out-bg"></div>
+            <div className="zoom-container">
+                <Image
+                    className="login-zoom-out-bg"
+                    src={loginBackground}
+                    alt="Login background"
+                    layout="fill"
+                    objectFit="cover"
+                    objectPosition="center"
+                    priority
+                ></Image>
+            </div>
+
             <div className="fixed bottom-8 right-2 md:right-8 p-4 flex flex-col items-start space-y-6 text-white">
                 <div className="space-y-4 login-slide-in-left">
                     <h1 className="text-6xl font-semibold -mb-4">Welcome!</h1>
@@ -39,7 +53,7 @@ export default function LoginPage() {
                             textColor="white"
                         />
                     </div>
-                    <div className="login-delay-2 login-slide-in-left ">
+                    {/* <div className="login-delay-2 login-slide-in-left ">
                         <Btn3dLg
                             onClick={googleLoginOnClick}
                             text="Login with Google"
@@ -47,7 +61,7 @@ export default function LoginPage() {
                             color="#ffffff"
                             textColor="black"
                         />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>
