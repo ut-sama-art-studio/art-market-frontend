@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import "./login.css";
 import { useRouter } from "next/navigation";
-import Btn3dLg from "@/components/btn-3d-lg";
+import Btn3dLg from "@/components/ui/btn-3d-lg";
 import { BsDiscord } from "react-icons/bs";
 import { BsGoogle } from "react-icons/bs";
 import { discordLogin } from "@/services/auth/auth-service";
@@ -29,7 +29,6 @@ export default function LoginPage() {
                     src={loginBackground}
                     alt="Login background"
                     layout="fill"
-                    objectFit="cover"
                     objectPosition="center"
                     priority
                 ></Image>

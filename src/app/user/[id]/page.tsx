@@ -1,20 +1,21 @@
 "use client";
 
-import ProfileInfo from "@/components/profile-info";
 import { useAuth } from "@/context/auth-context";
-import { User, fetchUserById } from "@/services/user/user-service";
+import { User, fetchUserById, updateUser } from "@/services/user/user-service";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import ProfileInfo from "@/components/user/profile-info";
 
 const UserPage = () => {
-    const { user } = useAuth();
+    const { user, updateContextUser } = useAuth();
+    const { toast } = useToast();
     const params = useParams();
     const id = params.id;
     const [queryUser, setQueryUser] = useState<User | null>(null);
     const [isSelf, setIsSelf] = useState(false);
 
     useEffect(() => {
-        // console.log(user);
         // if query self
         if (user && user.id == id) {
             setQueryUser(user);
@@ -25,15 +26,36 @@ const UserPage = () => {
                 .then((res) => setQueryUser(res))
                 .catch(() => setQueryUser(null));
         }
-    }, [id]);
+    }, [id, user]);
 
     if (!queryUser) {
-        return <div>User doesn't exit</div>;
+        return <div>User does not exit</div>;
     }
 
+    const onEditProfileSave = async (newUserInfo: Partial<User>) => {
+        const updatedUser = { ...user, ...newUserInfo } as User;
+        try {
+            await updateUser(updatedUser);
+            updateContextUser(updatedUser);
+            setQueryUser(updatedUser);
+            return true;
+        } catch (err: any) {
+            console.error("Failed to save edited profile", err?.message);
+            toast({
+                variant: "destructive",
+                description: "Failed to save changes.",
+            });
+            return false;
+        }
+    };
+
     return (
-        <div>
-            <ProfileInfo user={queryUser}/>
+        <div className="flex justify-center md:justify-start">
+            <ProfileInfo
+                user={queryUser}
+                allowEdit={isSelf}
+                onEditProfileSave={onEditProfileSave}
+            />
         </div>
     );
 };

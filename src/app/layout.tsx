@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from "next/font/google";
-import NavBar from "@/components/nav-bar";
+import NavBar from "@/components/nav-bar/nav-bar";
 import { AuthProvider } from "@/context/auth-context";
+import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
     weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -23,7 +24,8 @@ export default function RootLayout({
             <AuthProvider>
                 <body className={poppins.className}>
                     <NavBar></NavBar>
-                    <main>{children}</main>
+                    <main className="p-8 pt-0">{children}</main>
+                    <Toaster />
                 </body>
             </AuthProvider>
         </html>

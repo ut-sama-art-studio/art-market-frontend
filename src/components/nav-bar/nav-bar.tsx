@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import ArtMarketTextLogo from "./text-logo";
+import ArtMarketTextLogo from "@/components/ui/text-logo";
 import { useAuth } from "@/context/auth-context";
+import { NavProfileBtn } from "@/components/nav-bar/nav-bar-profile";
 
 export const NavBar = () => {
     const pathname = usePathname();
@@ -14,10 +15,10 @@ export const NavBar = () => {
     return (
         <nav
             className={cn(
-                "w-full h-fit z-10 flex justify-between items-center py-2 px-4",
+                "w-full h-fit z-10 flex justify-between items-center py-4 px-8",
                 isLoginPage
                     ? "bg-transparent absolute px-12 py-8 text-white login-drop-in"
-                    : "text-black"
+                    : "bg-white text-black"
             )}
         >
             <div className="flex items-center">
@@ -29,23 +30,22 @@ export const NavBar = () => {
                     />
                 </Link>
             </div>
-            <ul className="flex space-x-12">
+            <ul className="flex space-x-12 items-center">
                 <li>
                     <Link href="/events">Events</Link>
                 </li>
+                <li>
+                    <Link href="/about-us">About Us</Link>
+                </li>
                 {user ? (
                     <li>
-                        <Link href={`/user/${user.id}`}>Account</Link>
+                        <NavProfileBtn user={user} />
                     </li>
                 ) : (
                     <li>
                         <Link href="/login">Login</Link>
                     </li>
                 )}
-
-                <li>
-                    <Link href="/about-us">About Us</Link>
-                </li>
             </ul>
         </nav>
     );

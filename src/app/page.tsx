@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
             );
             login(token);
         }
-    }, [user]);
+    }, [user, login]);
 
     return (
         <main>

@@ -8,20 +8,14 @@ var graphQLClient = new GraphQLClient(endpoint, {
     headers: {},
 });
 
-export async function graphqlUseToken(token: string) {
-    if (token) {
-        graphQLClient.setHeader("Authorization", `Bearer ${token}`);
-    }
-}
-
 export async function graphqlRequest(
     gqlRequest: string,
     variables?: Object
 ): Promise<any> {
-    // const token = getAuthToken();
-    // if (token) {
-    //     graphQLClient.setHeader("Authorization", `Bearer ${token}`);
-    // }
+    const token = getAuthToken();
+    if (token) {
+        graphQLClient.setHeader("Authorization", `Bearer ${token}`);
+    }
 
     try {
         const data = await graphQLClient.request(gqlRequest, variables);
