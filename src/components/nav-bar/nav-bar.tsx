@@ -42,9 +42,11 @@ export const NavBar = () => {
                         <NavProfileBtn user={user} />
                     </li>
                 ) : (
-                    <li>
-                        <Link href="/login">Login</Link>
-                    </li>
+                    !isLoginPage && (
+                        <li>
+                            <Link href="/login">Login</Link>
+                        </li>
+                    )
                 )}
             </ul>
         </nav>

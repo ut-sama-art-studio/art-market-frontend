@@ -12,7 +12,7 @@ import {
     removeAuthToken,
     setAuthToken,
 } from "@/services/auth/auth-service";
-import { User, fetchAuthUser } from "@/services/user/user-service";
+import { User, fetchAuthUser } from "@/services/users/user-service";
 
 export interface AuthContextType {
     user: User | undefined; // only available if authenticated

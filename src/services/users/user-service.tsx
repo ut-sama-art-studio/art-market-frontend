@@ -1,5 +1,5 @@
-import { gql } from "graphql-request";
-import { graphqlRequest } from "../graphql/graphql-service";
+import { gql } from "@apollo/client";
+import { graphqlQuery } from "../graphql/graphql-service";
 import { useAuth } from "@/context/auth-context";
 
 export type User = {
@@ -14,7 +14,7 @@ export type User = {
 
 // needs to be authenticated
 export const fetchAuthUser = async (): Promise<User> => {
-    const res = await graphqlRequest(gql`
+    const res = await graphqlQuery(gql`
         query Me {
             me {
                 id
@@ -35,7 +35,7 @@ export const fetchAuthUser = async (): Promise<User> => {
 };
 
 export const fetchUserById = async (id: string): Promise<User> => {
-    const res = await graphqlRequest(
+    const res = await graphqlQuery(
         gql`
             query getUserById($id: ID!) {
                 user(id: $id) {
@@ -59,7 +59,7 @@ export const fetchUserById = async (id: string): Promise<User> => {
 };
 
 export const updateUser = async (updatedUser: User) => {
-    const res = await graphqlRequest(
+    const res = await graphqlQuery(
         gql`
             mutation updateUser($id: ID!, $input: UpdateUser!) {
                 updateUser(id: $id, input: $input) {

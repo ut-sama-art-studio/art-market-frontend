@@ -1,5 +1,5 @@
 import { useAuth } from "@/context/auth-context";
-import { User } from "@/services/user/user-service";
+import { User } from "@/services/users/user-service";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -50,6 +50,7 @@ export function NavProfileBtn({ user }: NavProfileProps) {
                             ? user.profilePicture
                             : defaultProfile
                     }
+                    objectFit="cover"
                     alt="profile picture"
                 />
             </div>

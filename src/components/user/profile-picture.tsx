@@ -4,8 +4,8 @@ import defaultProfile from "@/../public/images/default-profile-pic.jpg";
 import { RiImageAddLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 
-import { User } from "@/services/user/user-service";
-import { uploadImage } from "@/services/image/image-service";
+import { User } from "@/services/users/user-service";
+import { uploadImage } from "@/services/images/image-service";
 import { useToast } from "@/hooks/use-toast";
 
 interface UserProfilePictureProps {
@@ -56,6 +56,7 @@ export function UserProfilePicture({
                 src={
                     user?.profilePicture ? user.profilePicture : defaultProfile
                 }
+                objectFit="cover"
                 alt="profile picture"
             />
 

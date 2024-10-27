@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/auth-context";
-import { User, fetchUserById, updateUser } from "@/services/user/user-service";
+import { User, fetchUserById, updateUser } from "@/services/users/user-service";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";

@@ -1,16 +1,12 @@
-import { gql } from "graphql-request";
-import { graphqlRequest } from "../graphql/graphql-service";
+import { gql } from "@apollo/client";
+import { graphqlUploadMutate } from "../graphql/graphql-service";
 
 // Returns the url of the image after uploading
 export const uploadImage = async (file: File): Promise<string> => {
-    const res = await graphqlRequest(
+    const res = await graphqlUploadMutate(
         gql`
             mutation singleUpload($file: Upload!) {
-                singleUpload(file: $file) {
-                    filename
-                    mimetype
-                    encoding
-                }
+                singleUpload(file: $file)
             }
         `,
         { file }
@@ -27,7 +23,7 @@ export const uploadImage = async (file: File): Promise<string> => {
 export const uploadMultipleImages = async (
     files: File[]
 ): Promise<string[]> => {
-    const res = await graphqlRequest(
+    const res = await graphqlUploadMutate(
         gql`
             mutation multipleUpload($req: [Upload!]!) {
                 multipleUpload(req: $req)

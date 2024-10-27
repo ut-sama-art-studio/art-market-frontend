@@ -29,6 +29,7 @@ export default function LoginPage() {
                     src={loginBackground}
                     alt="Login background"
                     layout="fill"
+                    objectFit="cover"
                     objectPosition="center"
                     priority
                 ></Image>

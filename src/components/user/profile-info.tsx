@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { UserProfilePicture } from "@/components/user/profile-picture";
-import { User } from "@/services/user/user-service";
+import { User } from "@/services/users/user-service";
 
 interface ProfileInfoProps {
     user: User;
