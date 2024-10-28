@@ -84,7 +84,7 @@ export async function graphqlMutate(
     }
 }
 
-// Use this mutation to upload files
+// Use this mutation to upload files (whenever parameter has an 'Upload')
 export async function graphqlUploadMutate(
     gqlRequest: DocumentNode,
     variables?: Record<string, any>

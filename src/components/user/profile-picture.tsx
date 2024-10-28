@@ -10,16 +10,17 @@ import { useToast } from "@/hooks/use-toast";
 
 interface UserProfilePictureProps {
     user: User;
-    allowEdit?: boolean;
+    allowEdit: boolean;
+    handleProfilePictureUpload: (file: File) => void;
 }
-export function UserProfilePicture({
+export default function UserProfilePicture({
     user,
     allowEdit,
+    handleProfilePictureUpload,
 }: UserProfilePictureProps) {
     const [isMouseOverProfilePicture, setIsMouseOverProfilePicture] =
         useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { toast } = useToast();
 
     const handleDivClick = () => {
         if (fileInputRef.current) {
@@ -32,39 +33,35 @@ export function UserProfilePicture({
     ) => {
         const file = event.target.files?.[0];
         if (file) {
-            try {
-                const url = await uploadImage(file);
-                console.log(url);
-            } catch (error) {
-                toast({
-                    variant: "destructive",
-                    description: "Failed to upload profile picture.",
-                });
-            }
+            handleProfilePictureUpload(file);
         }
     };
 
     return (
         <div
-            className="overflow-hidden rounded-full w-40 h-40 border border-gray-300 grid"
+            className="overflow-hidden rounded-full w-40 h-40 border border-gray-300 relative grid"
             onMouseOver={() => setIsMouseOverProfilePicture(true)}
             onMouseOut={() => setIsMouseOverProfilePicture(false)}
             onClick={handleDivClick}
         >
             <Image
-                style={{ gridRow: "1", gridColumn: "1" }}
+                style={{
+                    gridRow: "1",
+                    gridColumn: "1",
+                }}
                 src={
                     user?.profilePicture ? user.profilePicture : defaultProfile
                 }
+                alt="Profile Picture"
+                layout="fill"
                 objectFit="cover"
-                alt="profile picture"
+                className=""
             />
-
             {allowEdit && (
                 <div
                     style={{ gridRow: "1", gridColumn: "1" }}
                     className={cn(
-                        "w-full h-full flex flex-col justify-center items-center bg-gray-500 bg-opacity-70 opacity-0 cursor-pointer transition-opacity",
+                        "w-full h-full flex flex-col justify-center items-center bg-gray-500 bg-opacity-70 opacity-0 cursor-pointer transition-opacity z-10",
                         allowEdit && isMouseOverProfilePicture && "opacity-100"
                     )}
                 >

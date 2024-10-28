@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-
-import { UserProfilePicture } from "@/components/user/profile-picture";
 import { User } from "@/services/users/user-service";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface ProfileInfoProps {
     user: User;
@@ -18,8 +18,24 @@ export default function ProfileInfo({
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(user.name);
     const [editedBio, setEditedBio] = useState(user.bio ?? "");
+    const { toast } = useToast();
+    const maxBioLength = 255;
 
     const handleSave = async () => {
+        if (editedBio.length > 255) {
+            toast({
+                variant: "destructive",
+                description: "Bio is too long",
+            });
+            return;
+        } else if (editedName.length > 128) {
+            toast({
+                variant: "destructive",
+                description: "Name is too long",
+            });
+            return;
+        }
+
         const success = await onEditProfileSave({
             name: editedName,
             bio: editedBio,
@@ -37,12 +53,7 @@ export default function ProfileInfo({
     };
 
     return (
-        <div className="flex flex-col items-center w-80">
-            <UserProfilePicture
-                user={user}
-                allowEdit={allowEdit}
-            ></UserProfilePicture>
-
+        <>
             {isEditing ? (
                 <>
                     <input
@@ -51,14 +62,19 @@ export default function ProfileInfo({
                         onChange={(e) => setEditedName(e.target.value)}
                         className="text-xl mt-2 border border-gray-300 rounded px-2 w-64"
                     />
-                    <textarea
-                        value={editedBio}
-                        placeholder="Introduce yourself here..."
-                        onChange={(e) => setEditedBio(e.target.value)}
-                        maxLength={300}
-                        className="text-sm text-opacity-50 mt-2 border border-gray-300 rounded px-1 w-full"
-                        rows={3}
-                    />
+                    <div className="relative mt-2 w-full">
+                        <textarea
+                            value={editedBio}
+                            placeholder="Introduce yourself here..."
+                            onChange={(e) => setEditedBio(e.target.value)}
+                            maxLength={maxBioLength}
+                            className="text-sm text-opacity-50 border border-gray-300 rounded px-1 w-full h-20"
+                            rows={3}
+                        />
+                        <div className="text-xs text-gray-500 text-right">
+                            {editedBio.length}/{maxBioLength}
+                        </div>
+                    </div>
                 </>
             ) : (
                 <>
@@ -100,6 +116,6 @@ export default function ProfileInfo({
                         Edit profile
                     </Button>
                 ))}
-        </div>
+        </>
     );
 }

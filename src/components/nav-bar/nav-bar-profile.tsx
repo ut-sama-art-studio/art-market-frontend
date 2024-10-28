@@ -40,7 +40,7 @@ export function NavProfileBtn({ user }: NavProfileProps) {
         >
             <div
                 className={cn(
-                    "rounded-full overflow-hidden border border-gray-300 w-10 h-10 transition-transform duration-300 ease-out cursor-pointer",
+                    "rounded-full overflow-hidden border border-gray-300 w-10 h-10 transition-transform duration-300 ease-out cursor-pointer relative",
                     (isHover || debouncedIsHover) && "scale-110"
                 )}
             >
@@ -50,8 +50,9 @@ export function NavProfileBtn({ user }: NavProfileProps) {
                             ? user.profilePicture
                             : defaultProfile
                     }
+                    layout="fill"
                     objectFit="cover"
-                    alt="profile picture"
+                    alt="Profile Picture"
                 />
             </div>
 

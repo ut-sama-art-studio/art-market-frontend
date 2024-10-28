@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
-import { graphqlQuery } from "../graphql/graphql-service";
-import { useAuth } from "@/context/auth-context";
+import { graphqlMutate, graphqlQuery, graphqlUploadMutate } from "../graphql/graphql-service";
 
 export type User = {
     id: string;
@@ -27,10 +26,10 @@ export const fetchAuthUser = async (): Promise<User> => {
             }
         }
     `);
-    if (res != undefined) {
+    if (res?.me) {
         return res.me;
     } else {
-        throw new Error("Failed to fetch user data");
+        return Promise.reject("Failed to fetch me");
     }
 };
 
@@ -51,15 +50,15 @@ export const fetchUserById = async (id: string): Promise<User> => {
         `,
         { id: id }
     );
-    if (res != undefined) {
+    if (res?.user) {
         return res.user;
     } else {
-        throw new Error("Failed to fetch user data");
+        return Promise.reject("Failed to fetch user data");
     }
 };
 
-export const updateUser = async (updatedUser: User) => {
-    const res = await graphqlQuery(
+export const updateUser = async (updatedUser: User): Promise<Partial<User>> => {
+    const res = await graphqlMutate(
         gql`
             mutation updateUser($id: ID!, $input: UpdateUser!) {
                 updateUser(id: $id, input: $input) {
@@ -79,9 +78,29 @@ export const updateUser = async (updatedUser: User) => {
             },
         }
     );
-    if (res != undefined) {
-        return res.user;
+    if (res?.updateUser) {
+        return res.updateUser;
     } else {
-        throw new Error("Failed to update user data");
+        return Promise.reject("Failed to update user");
+    }
+};
+
+// Returns a link to the new profile picture
+export const changeProfilePicture = async (file: File): Promise<string> => {
+    const res = await graphqlUploadMutate(
+        gql`
+            mutation updateProfilePicture($file: Upload!) {
+                updateProfilePicture(file: $file) {
+                    profilePicture
+                }
+            }
+        `,
+        { file }
+    );
+    console.log(res);
+    if (res?.updateProfilePicture?.profilePicture) {
+        return res.updateProfilePicture.profilePicture;
+    } else {
+        return Promise.reject("Failed up update profile picture");
     }
 };
