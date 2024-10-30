@@ -8,11 +8,12 @@ import {
     updateUser,
 } from "@/services/users/user-service";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 import ProfileInfo from "@/components/user/profile-info";
 import UserProfilePicture from "@/components/user/profile-picture";
+import MerchGrid from "@/components/user/merch-grid";
 
 const UserPage = () => {
     const { user, updateContextUser } = useAuth();
@@ -21,6 +22,9 @@ const UserPage = () => {
     const id = params.id;
     const [queryUser, setQueryUser] = useState<User | null>(null);
     const [isSelf, setIsSelf] = useState(false);
+
+    const [isEditingInfo, setIsEditingInfo] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         // if query self
@@ -42,7 +46,6 @@ const UserPage = () => {
         const updatedUser = { ...user, ...newUserInfo } as User;
         try {
             await updateUser(updatedUser);
-            console.log("updateContextUser");
             updateContextUser(updatedUser);
             return true;
         } catch (err: any) {
@@ -52,6 +55,12 @@ const UserPage = () => {
                 description: "Failed to save edited profile.",
             });
             return false;
+        }
+    };
+
+    const handleChangePictureClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click(); // Trigger click on the hidden input
         }
     };
 
@@ -72,19 +81,31 @@ const UserPage = () => {
     };
 
     return (
-        <div className="flex justify-center md:justify-start">
-            <div className="flex flex-col items-center w-80">
+        <div className="flex flex-col md:flex-row justify-center md:justify-start mx-0 lg:mx-32 xl:mx-48 2xl:mx-64 md:px-8">
+            <div className="flex flex-row md:flex-col items-center w-full md:w-64 px-4">
                 <UserProfilePicture
                     user={queryUser}
                     allowEdit={isSelf}
+                    isEditingInfo={isEditingInfo}
                     handleProfilePictureUpload={handleProfilePictureUpload}
-                ></UserProfilePicture>
-                <ProfileInfo
-                    user={queryUser}
-                    allowEdit={isSelf}
-                    onEditProfileSave={onEditProfileSave}
+                    fileInputRef={fileInputRef}
+                    handleChangePictureClick={handleChangePictureClick}
                 />
+                <div className="flex flex-col ml-4 md:ml-0 w-fit">
+                    <ProfileInfo
+                        user={queryUser}
+                        allowEdit={isSelf}
+                        onEditProfileSave={onEditProfileSave}
+                        isEditingInfo={isEditingInfo}
+                        setIsEditingInfo={setIsEditingInfo}
+                        handleChangePictureClick={handleChangePictureClick}
+                    />
+                </div>
             </div>
+
+            <hr className="h-1px my-2 bg-gray-200" />
+
+            <MerchGrid userId={queryUser.id} isSelf={isSelf} />
         </div>
     );
 };

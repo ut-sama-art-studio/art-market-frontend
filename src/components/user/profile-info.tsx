@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Ref, RefObject, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { User } from "@/services/users/user-service";
 import { useToast } from "@/hooks/use-toast";
@@ -8,14 +8,19 @@ interface ProfileInfoProps {
     user: User;
     allowEdit: boolean;
     onEditProfileSave: (newUserInfo: Partial<User>) => Promise<boolean>;
+    isEditingInfo: boolean;
+    setIsEditingInfo: (value: boolean) => void;
+    handleChangePictureClick: () => void;
 }
 
 export default function ProfileInfo({
     user,
     allowEdit,
     onEditProfileSave,
+    isEditingInfo,
+    setIsEditingInfo,
+    handleChangePictureClick,
 }: ProfileInfoProps) {
-    const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(user.name);
     const [editedBio, setEditedBio] = useState(user.bio ?? "");
     const { toast } = useToast();
@@ -43,26 +48,26 @@ export default function ProfileInfo({
         if (!success) {
             return;
         }
-        setIsEditing(false);
+        setIsEditingInfo(false);
     };
 
     const handleCancel = () => {
         setEditedName(user.name);
         setEditedBio(user.bio ?? "");
-        setIsEditing(false);
+        setIsEditingInfo(false);
     };
 
     return (
         <>
-            {isEditing ? (
+            {isEditingInfo ? (
                 <>
                     <input
                         type="text"
                         value={editedName}
                         onChange={(e) => setEditedName(e.target.value)}
-                        className="text-xl mt-2 border border-gray-300 rounded px-2 w-64"
+                        className="text-xl mt-2 border border-gray-300 rounded px-2 w-full md:w-64"
                     />
-                    <div className="relative mt-2 w-full">
+                    <div className="relative mt-2 w-full md:w-64">
                         <textarea
                             value={editedBio}
                             placeholder="Introduce yourself here..."
@@ -77,20 +82,20 @@ export default function ProfileInfo({
                     </div>
                 </>
             ) : (
-                <>
-                    <div className="text-xl mt-2">{user.name}</div>
-                    <p className="text-sm text-opacity-50">
+                <div className="flex flex-col items-start md:items-center w-full md:w-64">
+                    <div className="text-lg mt-2 font-medium">{user.name}</div>
+                    <p className="text-sm text-opacity-50 whitespace-pre-wrap">
                         {user.bio ??
                             "<This artist is too cool to give an introduction>"}
                     </p>
-                </>
+                </div>
             )}
 
             {allowEdit &&
-                (isEditing ? (
-                    <div className="mt-2">
+                (isEditingInfo ? (
+                    <div className="mt-1 flex justify-end">
                         <Button
-                            className="rounded-full mr-2"
+                            className="rounded-lg"
                             variant="default"
                             size="sm"
                             onClick={handleSave}
@@ -98,7 +103,7 @@ export default function ProfileInfo({
                             Save
                         </Button>
                         <Button
-                            className="rounded-full"
+                            className="rounded-lg ml-2"
                             variant="secondary"
                             size="sm"
                             onClick={handleCancel}
@@ -107,14 +112,24 @@ export default function ProfileInfo({
                         </Button>
                     </div>
                 ) : (
-                    <Button
-                        className="rounded-full mt-2"
-                        variant="default"
-                        size="sm"
-                        onClick={() => setIsEditing(true)}
-                    >
-                        Edit profile
-                    </Button>
+                    <div className="flex justify-end md:justify-center">
+                        <Button
+                            className="rounded-lg mt-2"
+                            variant="default"
+                            size="sm"
+                            onClick={() => setIsEditingInfo(true)}
+                        >
+                            Edit profile
+                        </Button>
+                        <Button
+                            className="rounded-lg mt-2 ml-2 relative md:hidden"
+                            variant="default"
+                            size="sm"
+                            onClick={handleChangePictureClick}
+                        >
+                            Change picture
+                        </Button>
+                    </div>
                 ))}
         </>
     );

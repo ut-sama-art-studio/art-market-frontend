@@ -1,32 +1,29 @@
-import React, { useRef, useState } from "react";
+import React, { RefObject, useRef, useState } from "react";
 import Image from "next/image";
 import defaultProfile from "@/../public/images/default-profile-pic.jpg";
 import { RiImageAddLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 
 import { User } from "@/services/users/user-service";
-import { uploadImage } from "@/services/images/image-service";
-import { useToast } from "@/hooks/use-toast";
 
 interface UserProfilePictureProps {
     user: User;
     allowEdit: boolean;
+    isEditingInfo: boolean;
     handleProfilePictureUpload: (file: File) => void;
+    fileInputRef: RefObject<HTMLInputElement>;
+    handleChangePictureClick: () => void;
 }
 export default function UserProfilePicture({
     user,
     allowEdit,
+    isEditingInfo,
     handleProfilePictureUpload,
+    fileInputRef,
+    handleChangePictureClick,
 }: UserProfilePictureProps) {
     const [isMouseOverProfilePicture, setIsMouseOverProfilePicture] =
         useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const handleDivClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click(); // Trigger click on the hidden input
-        }
-    };
 
     const handleSelectFile = async (
         event: React.ChangeEvent<HTMLInputElement>
@@ -39,10 +36,13 @@ export default function UserProfilePicture({
 
     return (
         <div
-            className="overflow-hidden rounded-full w-40 h-40 border border-gray-300 relative grid"
+            className={cn(
+                "overflow-hidden rounded-full w-24 h-24 min-w-24 md:w-40 md:h-40 md:min-w-40 border border-gray-300 relative grid",
+                isEditingInfo && "min-w-0"
+            )}
             onMouseOver={() => setIsMouseOverProfilePicture(true)}
             onMouseOut={() => setIsMouseOverProfilePicture(false)}
-            onClick={handleDivClick}
+            onClick={handleChangePictureClick}
         >
             <Image
                 style={{
@@ -55,13 +55,12 @@ export default function UserProfilePicture({
                 alt="Profile Picture"
                 layout="fill"
                 objectFit="cover"
-                className=""
             />
             {allowEdit && (
                 <div
                     style={{ gridRow: "1", gridColumn: "1" }}
                     className={cn(
-                        "w-full h-full flex flex-col justify-center items-center bg-gray-500 bg-opacity-70 opacity-0 cursor-pointer transition-opacity z-10",
+                        "w-full h-full flex flex-col justify-center items-center bg-gray-500 bg-opacity-70 opacity-0 cursor-pointer transition-opacity z-10 hidden md:relative",
                         allowEdit && isMouseOverProfilePicture && "opacity-100"
                     )}
                 >
@@ -76,7 +75,7 @@ export default function UserProfilePicture({
                         <div className="text-lg text-white flex justify-center">
                             <RiImageAddLine />
                         </div>
-                        <div className="text-m text-white text-center">
+                        <div className="text-sm text-white text-center">
                             Change Picture
                         </div>
                     </div>
