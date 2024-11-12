@@ -7,6 +7,9 @@ import ArtMarketTextLogo from "@/components/ui/text-logo";
 import { useAuth } from "@/context/auth-context";
 import { NavProfileBtn } from "@/components/nav-bar/nav-bar-profile";
 
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { IoCompassOutline } from "react-icons/io5";
+
 export const NavBar = () => {
     const pathname = usePathname();
     const isLoginPage = pathname === "/login";
@@ -32,11 +35,20 @@ export const NavBar = () => {
             </div>
             <ul className="flex space-x-12 items-center">
                 <li>
-                    <Link href="/events">Events</Link>
+                    <Link href="/explore" className="flex items-center">
+                        <IoCompassOutline className="text-xl" />
+                        Explore
+                    </Link>
+                </li>
+                {/* <li>
+                    <Link href="/events" className="flex items-center">
+                        <FaRegCalendarAlt className="text-xl pb-1" />
+                        Events
+                    </Link>
                 </li>
                 <li>
                     <Link href="/about-us">About Us</Link>
-                </li>
+                </li> */}
                 {user ? (
                     <li>
                         <NavProfileBtn user={user} />

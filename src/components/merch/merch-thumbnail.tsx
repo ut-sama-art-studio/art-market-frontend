@@ -1,16 +1,33 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import defaultProfile from "@/../public/images/default-profile-pic.jpg";
-import { MerchItem } from "@/services/merch/merch-service";
+import { Merch } from "@/services/merch/merch-service";
+import { cn } from "@/lib/utils";
 
 interface MerchThumbnailProps {
-    merch: MerchItem;
+    merch: Merch;
 }
 
 export default function MerchThumbnail({ merch }: MerchThumbnailProps) {
+    const [onHover, setOnHover] = useState(false);
+
     return (
-        <div className="flex flex-col p-1 md:p-2">
-            <div className="aspect-square flex items-center justify-center  bg-gray-100 relative">
+        <div
+            className="flex flex-col p-1 md:p-2"
+            onMouseOver={() => {
+                setOnHover(true);
+            }}
+            onMouseOut={() => {
+                setOnHover(false);
+            }}
+        >
+            <div
+                className={cn(
+                    "aspect-square flex items-center justify-center  bg-gray-100 relative",
+                    onHover &&
+                        "shadow-none md:shadow-[0_2px_10px_0px_rgba(0,0,0,0.2)] md:transition-shadow "
+                )}
+            >
                 <Image
                     style={{
                         gridRow: "1",
@@ -18,36 +35,31 @@ export default function MerchThumbnail({ merch }: MerchThumbnailProps) {
                     }}
                     src={merch.images[0]}
                     alt="Profile Picture"
-                    layout="fill"
-                    className="h-full w-full"
-                    objectFit="cover"
+                    fill
+                    className="object-cover"
                 />
             </div>
-            <div className="mt-1 flex w-full overflow-hidden text-gray-700 justify-between">
-                <div className="flex items-center">
+            <div className="mt-1 w-full overflow-hidden text-gray-700">
+                <div className="flex flex-col relative">
                     <p
-                        style={{ lineHeight: 1 }}
-                        className="text-xs md:text-sm font-medium"
+                        style={{ lineHeight: 1.25 }}
+                        className="text-xs md:text-sm overflow-hidden text-ellipsis whitespace-nowrap"
                     >
                         {merch.name}
                     </p>
+                    <div className="flex items-center justify-between">
+                        <p
+                            style={{ lineHeight: 1.25 }}
+                            className="text-xs md:text-sm text-gray-400 italic"
+                        >
+                            {merch.type}
+                        </p>
+                        <p className="ml-2 text-sm md:text-base font-medium">
+                            ${merch.price}
+                        </p>
+                    </div>
                 </div>
-                <p
-                    style={{ lineHeight: 1 }}
-                    className="ml-2 font-medium"
-                >
-                    ${merch.price}
-                </p>
             </div>
-            <p
-                style={{ lineHeight: 1.25 }}
-                className="text-xs md:text-sm font-light italic"
-            >
-                {merch.type}
-                {merch?.height != 0 &&
-                    merch?.width != 0 &&
-                    `, ${merch.width} x ${merch.height} ${merch.unit}`}
-            </p>
         </div>
     );
 }

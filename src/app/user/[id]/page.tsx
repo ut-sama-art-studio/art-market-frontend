@@ -29,13 +29,15 @@ const UserPage = () => {
     useEffect(() => {
         // if query self
         if (user && user.id == id) {
-            setQueryUser(user);
             setIsSelf(true);
+            setQueryUser(user);
         } else if (id) {
+            setIsSelf(false);
             fetchUserById(id as string)
                 .then((res) => setQueryUser(res))
                 .catch(() => setQueryUser(null));
         }
+        console.log(user);
     }, [id, user]);
 
     if (!queryUser) {
@@ -82,7 +84,7 @@ const UserPage = () => {
 
     return (
         <div className="flex flex-col md:flex-row justify-center md:justify-start mx-0 lg:mx-32 xl:mx-48 2xl:mx-64 md:px-8">
-            <div className="flex flex-row md:flex-col items-center w-full md:w-64 px-4">
+            <div className="flex flex-row md:flex-col items-center w-full md:w-64 h-fit">
                 <UserProfilePicture
                     user={queryUser}
                     allowEdit={isSelf}

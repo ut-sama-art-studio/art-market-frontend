@@ -14,7 +14,7 @@ export default function ArtMarketTextLogo({
                     className
                 )}
             >
-                <span className="font-semibold">UTSAMA</span> ART MARKET
+                <span className="font-semibold">UTSAMA</span> ART STUDIO
             </h1>
         </>
     );

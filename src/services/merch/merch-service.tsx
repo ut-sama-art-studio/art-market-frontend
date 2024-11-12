@@ -6,7 +6,7 @@ import {
 } from "../graphql/graphql-service";
 import { CreateMerchFormData } from "@/components/merch/create-merch-form";
 
-export type MerchItem = {
+export type Merch = {
     id: string;
     ownerId: string;
     name: string;
@@ -23,11 +23,13 @@ export type MerchItem = {
 // Function to create a new merch item
 export const createMerch = async (
     newMerch: CreateMerchFormData
-): Promise<MerchItem> => {
+): Promise<Merch> => {
     const res = await graphqlUploadMutate(
         gql`
             mutation createMerch($input: NewMerch!) {
                 createMerch(input: $input) {
+                    id
+                    ownerId
                     name
                     description
                     price
@@ -54,7 +56,7 @@ export const createMerch = async (
             },
         }
     );
-
+    
     if (res?.createMerch) {
         return res.createMerch;
     } else {
@@ -63,13 +65,12 @@ export const createMerch = async (
 };
 
 // Function to update an existing merch item
-export const updateMerch = async (
-    updatedMerch: MerchItem
-): Promise<MerchItem> => {
+export const updateMerch = async (updatedMerch: Merch): Promise<Merch> => {
     const res = await graphqlMutate(
         gql`
             mutation updateMerch($input: UpdateMerch!) {
                 updateMerch(input: $input) {
+                    id
                     ownerId
                     name
                     description
@@ -112,9 +113,7 @@ export const deleteMerch = async (id: string): Promise<boolean> => {
 };
 
 // Function to fetch all merch items owned by the authenticated user
-export const fetchUserMerchItems = async (
-    userId: string
-): Promise<MerchItem[]> => {
+export const fetchUserMerchItems = async (userId: string): Promise<Merch[]> => {
     const res = await graphqlQuery(
         gql`
             query userMerchItems($userId: ID!) {

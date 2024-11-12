@@ -3,8 +3,7 @@ import { User } from "@/services/users/user-service";
 import Image from "next/image";
 import { useState } from "react";
 
-import defaultProfile from "@/../public/images/default-profile-pic.jpg";
-import { cn } from "@/lib/utils";
+import { cn, handleNoProfilePicture } from "@/lib/utils";
 import Link from "next/link";
 import { useDebounce } from "@/hooks/use-debounce";
 
@@ -45,13 +44,9 @@ export function NavProfileBtn({ user }: NavProfileProps) {
                 )}
             >
                 <Image
-                    src={
-                        user?.profilePicture
-                            ? user.profilePicture
-                            : defaultProfile
-                    }
-                    layout="fill"
-                    objectFit="cover"
+                    src={handleNoProfilePicture(user?.profilePicture)}
+                    fill
+                    className="object-cover"
                     alt="Profile Picture"
                 />
             </div>

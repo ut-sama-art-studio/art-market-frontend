@@ -1,5 +1,9 @@
 import { gql } from "@apollo/client";
-import { graphqlMutate, graphqlQuery, graphqlUploadMutate } from "../graphql/graphql-service";
+import {
+    graphqlMutate,
+    graphqlQuery,
+    graphqlUploadMutate,
+} from "../graphql/graphql-service";
 
 export type User = {
     id: string;
@@ -45,6 +49,26 @@ export const fetchUserById = async (id: string): Promise<User> => {
                     profilePicture
                     bio
                     role
+                }
+            }
+        `,
+        { id: id }
+    );
+    if (res?.user) {
+        return res.user;
+    } else {
+        return Promise.reject("Failed to fetch user data");
+    }
+};
+
+export const fetchSimpleUserById = async (id: string): Promise<User> => {
+    const res = await graphqlQuery(
+        gql`
+            query getUserById($id: ID!) {
+                user(id: $id) {
+                    id
+                    name
+                    profilePicture
                 }
             }
         `,

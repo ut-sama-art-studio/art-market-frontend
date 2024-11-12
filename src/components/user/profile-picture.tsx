@@ -1,8 +1,7 @@
 import React, { RefObject, useRef, useState } from "react";
 import Image from "next/image";
-import defaultProfile from "@/../public/images/default-profile-pic.jpg";
 import { RiImageAddLine } from "react-icons/ri";
-import { cn } from "@/lib/utils";
+import { cn, handleNoProfilePicture } from "@/lib/utils";
 
 import { User } from "@/services/users/user-service";
 
@@ -49,18 +48,20 @@ export default function UserProfilePicture({
                     gridRow: "1",
                     gridColumn: "1",
                 }}
-                src={
-                    user?.profilePicture ? user.profilePicture : defaultProfile
-                }
+                src={handleNoProfilePicture(user?.profilePicture)}
                 alt="Profile Picture"
-                layout="fill"
-                objectFit="cover"
+                fill
+                priority
+                className={cn(
+                    "object-cover",
+                    isMouseOverProfilePicture && "animate-spin"
+                )}
             />
             {allowEdit && (
                 <div
                     style={{ gridRow: "1", gridColumn: "1" }}
                     className={cn(
-                        "w-full h-full flex flex-col justify-center items-center bg-gray-500 bg-opacity-70 opacity-0 cursor-pointer transition-opacity z-10 hidden md:relative",
+                        "w-full h-full flex flex-col justify-center items-center bg-gray-500 bg-opacity-70 opacity-0 cursor-pointer transition-opacity z-10",
                         allowEdit && isMouseOverProfilePicture && "opacity-100"
                     )}
                 >

@@ -25,11 +25,10 @@ export default function LoginPage() {
         <>
             <div className="zoom-container">
                 <Image
-                    className="login-zoom-out-bg"
+                    className="login-zoom-out-bg object-cover"
                     src={loginBackground}
                     alt="Login background"
-                    layout="fill"
-                    objectFit="cover"
+                    fill
                     objectPosition="center"
                     priority
                 ></Image>

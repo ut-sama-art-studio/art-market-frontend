@@ -48,6 +48,8 @@ export default function CreateMerchForm({
         formState: { errors },
     } = form;
 
+    const maxDescriptionLength = 255;
+    const [descriptionLength, setDescriptionLength] = useState(0);
 
     const onSubmit = (data: CreateMerchFormData) => {
         handleAddMerch(data);
@@ -64,10 +66,11 @@ export default function CreateMerchForm({
                                 {...register("merchName", {
                                     required: "Name is required",
                                 })}
+                                maxLength={128}
                             />
                         </FormControl>
                         {errors.merchName ? (
-                            <FormMessage>
+                            <FormMessage className="text-xs">
                                 {errors.merchName.message}
                             </FormMessage>
                         ) : (
@@ -87,11 +90,17 @@ export default function CreateMerchForm({
                                         value: 0.01,
                                         message: "Price must > 0",
                                     },
+                                    max: {
+                                        value: 114514,
+                                        message: "Price must be realistic",
+                                    },
                                 })}
                             />
                         </FormControl>
                         {errors.price ? (
-                            <FormMessage>{errors.price.message}</FormMessage>
+                            <FormMessage className="text-xs">
+                                {errors.price.message}
+                            </FormMessage>
                         ) : (
                             <div className="mb-2" />
                         )}
@@ -101,10 +110,21 @@ export default function CreateMerchForm({
                 <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                        <Textarea rows={4} />
+                        <Textarea
+                            rows={4}
+                            maxLength={maxDescriptionLength}
+                            onChange={(e) =>
+                                setDescriptionLength(e.target.value.length)
+                            }
+                        />
                     </FormControl>
+                    <div className="text-xs text-gray-500 text-right h-0">
+                        {descriptionLength}/{maxDescriptionLength}
+                    </div>
                     {errors.description ? (
-                        <FormMessage>{errors.description.message}</FormMessage>
+                        <FormMessage className="text-xs">
+                            {errors.description.message}
+                        </FormMessage>
                     ) : (
                         <div className="mb-2" />
                     )}
@@ -129,13 +149,15 @@ export default function CreateMerchForm({
                             </select>
                         </FormControl>
                         {errors.type ? (
-                            <FormMessage>{errors.type.message}</FormMessage>
+                            <FormMessage className="text-xs">
+                                {errors.type.message}
+                            </FormMessage>
                         ) : (
                             <div className="mb-2" />
                         )}
                     </FormItem>
 
-                    <FormItem>
+                    <FormItem className="hidden">
                         <FormLabel>Inventory</FormLabel>
                         <FormControl>
                             <Input
@@ -150,7 +172,7 @@ export default function CreateMerchForm({
                             />
                         </FormControl>
                         {errors.inventory ? (
-                            <FormMessage>
+                            <FormMessage className="text-xs">
                                 {errors.inventory.message}
                             </FormMessage>
                         ) : (
@@ -169,14 +191,20 @@ export default function CreateMerchForm({
                                 {...register("width", {
                                     required: "Width is required",
                                     min: {
-                                        value: 0,
-                                        message: "Width must be positive",
+                                        value: 0.1,
+                                        message: "Width must be > 0",
+                                    },
+                                    max: {
+                                        value: 9999,
+                                        message: "Width must be realistic",
                                     },
                                 })}
                             />
                         </FormControl>
                         {errors.width ? (
-                            <FormMessage>{errors.width.message}</FormMessage>
+                            <FormMessage className="text-xs">
+                                {errors.width.message}
+                            </FormMessage>
                         ) : (
                             <div className="mb-2" />
                         )}
@@ -191,14 +219,20 @@ export default function CreateMerchForm({
                                 {...register("height", {
                                     required: "Height is required",
                                     min: {
-                                        value: 0,
-                                        message: "Height must be positive",
+                                        value: 0.1,
+                                        message: "Height must be > 0",
+                                    },
+                                    max: {
+                                        value: 9999,
+                                        message: "Height must be realistic",
                                     },
                                 })}
                             />
                         </FormControl>
                         {errors.height ? (
-                            <FormMessage>{errors.height.message}</FormMessage>
+                            <FormMessage className="text-xs">
+                                {errors.height.message}
+                            </FormMessage>
                         ) : (
                             <div className="mb-2" />
                         )}
@@ -239,7 +273,9 @@ export default function CreateMerchForm({
                         />
                     </FormControl>
                     {errors.images ? (
-                        <FormMessage>{errors.images.message}</FormMessage>
+                        <FormMessage className="text-xs">
+                            {errors.images.message}
+                        </FormMessage>
                     ) : (
                         <div className="mb-2" />
                     )}
