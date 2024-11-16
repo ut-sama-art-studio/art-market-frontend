@@ -4,6 +4,8 @@ import { User } from "@/services/users/user-service";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
+import { FaDiscord } from "react-icons/fa";
+
 interface ProfileInfoProps {
     user: User;
     allowEdit: boolean;
@@ -65,7 +67,7 @@ export default function ProfileInfo({
                         type="text"
                         value={editedName}
                         onChange={(e) => setEditedName(e.target.value)}
-                        className="text-xl mt-2 border border-gray-300 rounded px-2 w-full md:w-64"
+                        className="text-lg mt-2 border border-gray-300 rounded px-2 w-full md:w-64"
                     />
                     <div className="relative mt-2 w-full md:w-64">
                         <textarea
@@ -84,9 +86,21 @@ export default function ProfileInfo({
             ) : (
                 <div className="flex flex-col items-start md:items-center w-full md:w-64">
                     <div className="text-lg mt-2 font-medium">{user.name}</div>
-                    <p className="text-sm text-opacity-50 whitespace-pre-wrap">
-                        {user.bio ??
-                            "<This artist is too cool to give an introduction>"}
+                    <div className="flex text-sm">
+                        <div className="flex items-center text-indigo-500">
+                            <FaDiscord className="text-lg mr-1" />
+                            {user.username}
+                        </div>
+                    </div>
+                    <p
+                        className={cn(
+                            "text-sm whitespace-pre-wrap",
+                            !user.bio && "opacity-40 text-center"
+                        )}
+                    >
+                        {!user.bio || user.bio == ""
+                            ? "This artist is too cool to give an introduction"
+                            : user.bio}
                     </p>
                 </div>
             )}

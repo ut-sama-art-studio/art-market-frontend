@@ -179,7 +179,7 @@ function MerchDescription({
                     </DialogTitle>
                 </DialogHeader>
                 {owner && (
-                    <DialogDescription className="display flex items-center">
+                    <div className="display flex items-center">
                         by
                         <Link
                             href={`/user/${owner.id}`}
@@ -201,7 +201,7 @@ function MerchDescription({
                                 {owner.name}
                             </div>
                         </Link>
-                    </DialogDescription>
+                    </div>
                 )}
 
                 <hr className="my-3" />

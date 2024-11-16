@@ -113,6 +113,7 @@ export default function CreateMerchForm({
                         <Textarea
                             rows={4}
                             maxLength={maxDescriptionLength}
+                            {...register("description")}
                             onChange={(e) =>
                                 setDescriptionLength(e.target.value.length)
                             }

@@ -35,9 +35,14 @@ export const NavBar = () => {
             </div>
             <ul className="flex space-x-12 items-center">
                 <li>
-                    <Link href="/explore" className="flex items-center">
+                    <Link href="/merch" className="flex items-center">
                         <IoCompassOutline className="text-xl" />
-                        Explore
+                        Merch
+                    </Link>
+                </li>
+                <li>
+                    <Link href="/explore" className="flex items-center">
+                        Artists
                     </Link>
                 </li>
                 {/* <li>
