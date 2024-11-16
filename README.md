@@ -1,4 +1,11 @@
-![image](https://github.com/user-attachments/assets/dd393a7e-1615-41f6-a8e0-da8bc6b966f1)
+## Tour
+### User Page
+![image](https://github.com/user-attachments/assets/c6b910f6-2807-469e-9dd9-1a3e1633f205)
+
+### Merch Creation
+![image](https://github.com/user-attachments/assets/507e8f67-58c5-42d3-a63c-d1802489e3d3)
+### Merch Details
+![image](https://github.com/user-attachments/assets/af196574-78e5-4ed6-9edc-7798b87097f0)
 
 ## Getting Started
 Install dependencies
