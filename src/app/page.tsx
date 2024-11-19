@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { getQueryParam } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
+import MerchPage from "./merch/page";
 
 const HomePage: React.FC = () => {
     const { user, login } = useAuth();
@@ -23,13 +24,7 @@ const HomePage: React.FC = () => {
 
     return (
         <main>
-            <div>
-                {user ? (
-                    <h1>Welcome, {user.name}!</h1>
-                ) : (
-                    <h1>Not logged in!</h1>
-                )}
-            </div>
+            <MerchPage />
         </main>
     );
 };
