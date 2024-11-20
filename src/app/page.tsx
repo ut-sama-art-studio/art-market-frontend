@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getQueryParam } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import MerchPage from "./merch/page";
+import ArtistsPage from "./artists/page";
 
 const HomePage: React.FC = () => {
     const { user, login } = useAuth();
@@ -24,7 +25,7 @@ const HomePage: React.FC = () => {
 
     return (
         <main>
-            <MerchPage />
+            <ArtistsPage />
         </main>
     );
 };

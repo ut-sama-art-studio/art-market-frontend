@@ -9,11 +9,16 @@ import { NavProfileBtn } from "@/components/nav-bar/nav-bar-profile";
 
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoCompassOutline } from "react-icons/io5";
+import { useEffect } from "react";
 
 export const NavBar = () => {
     const pathname = usePathname();
     const isLoginPage = pathname === "/login";
     const { user } = useAuth();
+
+    useEffect(() => {
+        console.log(user);
+    }, [user]);
 
     return (
         <nav
@@ -41,10 +46,17 @@ export const NavBar = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link href="/explore" className="flex items-center">
+                    <Link href="/artists" className="flex items-center">
                         Artists
                     </Link>
                 </li>
+                {(user?.role == "admin" || user?.role == "director") && (
+                    <li>
+                        <Link href="/admin" className="flex items-center">
+                            Admin
+                        </Link>
+                    </li>
+                )}
                 {/* <li>
                     <Link href="/events" className="flex items-center">
                         <FaRegCalendarAlt className="text-xl pb-1" />

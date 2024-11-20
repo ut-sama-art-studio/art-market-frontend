@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import ProfileInfo from "@/components/user/profile-info";
 import UserProfilePicture from "@/components/user/profile-picture";
 import MerchGrid from "@/components/user/merch-grid";
+import VerifyArtistDialog from "@/components/user/verify-artist-dialog";
 
 const UserPage = () => {
     const { user, updateContextUser } = useAuth();
@@ -22,6 +23,7 @@ const UserPage = () => {
     const id = params.id;
     const [queryUser, setQueryUser] = useState<User | null>(null);
     const [isSelf, setIsSelf] = useState(false);
+    const [isSelfArtist, setSelfArtist] = useState(false);
 
     const [isEditingInfo, setIsEditingInfo] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -30,18 +32,27 @@ const UserPage = () => {
         // if query self
         if (user && user.id == id) {
             setIsSelf(true);
+            // check if user is artist
+            if (
+                user.role === "artist" ||
+                user.role === "director" ||
+                user.role === "admin"
+            ) {
+                setSelfArtist(true);
+            }
+
             setQueryUser(user);
         } else if (id) {
             setIsSelf(false);
             fetchUserById(id as string)
-                .then((res) => setQueryUser(res))
+                .then((res: User) => setQueryUser(res))
                 .catch(() => setQueryUser(null));
         }
         console.log(user);
     }, [id, user]);
 
     if (!queryUser) {
-        return <div>User does not exit</div>;
+        return <div>User doesn't exist</div>;
     }
 
     const onEditProfileSave = async (newUserInfo: Partial<User>) => {
@@ -107,7 +118,16 @@ const UserPage = () => {
 
             <hr className="h-1px my-2 bg-gray-200" />
 
-            <MerchGrid userId={queryUser.id} isSelf={isSelf} />
+            {isSelf && isSelfArtist ? (
+                <MerchGrid userId={queryUser.id} isSelf={isSelf} />
+            ) : (
+                <div className="flex flex-col w-full justify-center items-center">
+                    <div className=" text-center mt-4">
+                        Are you an artist, want to upload merch?
+                    </div>
+                    <VerifyArtistDialog />
+                </div>
+            )}
         </div>
     );
 };

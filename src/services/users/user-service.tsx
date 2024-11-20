@@ -5,6 +5,8 @@ import {
     graphqlUploadMutate,
 } from "../graphql/graphql-service";
 
+export type Role = "client" | "artist" | "director" | "admin";
+
 export type User = {
     id: string;
     name: string;
@@ -12,7 +14,7 @@ export type User = {
     email: string;
     profilePicture: string;
     bio: string;
-    role: string;
+    role: Role;
 };
 
 // needs to be authenticated

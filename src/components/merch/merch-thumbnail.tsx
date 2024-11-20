@@ -25,7 +25,7 @@ export default function MerchThumbnail({ merch }: MerchThumbnailProps) {
                 className={cn(
                     "aspect-square flex items-center justify-center  bg-gray-100 relative",
                     onHover &&
-                        "shadow-none md:shadow-[0_2px_10px_0px_rgba(0,0,0,0.2)] md:transition-shadow "
+                        "shadow-none md:shadow-[0_2px_10px_0px_rgba(0,0,0,0.2)] md:transition-shadow"
                 )}
             >
                 <Image

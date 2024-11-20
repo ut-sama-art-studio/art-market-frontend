@@ -54,7 +54,8 @@ export default function UserProfilePicture({
                 priority
                 className={cn(
                     "object-cover",
-                    isMouseOverProfilePicture && "animate-spin"
+                    isMouseOverProfilePicture &&
+                        "animate-[spin_6s_linear_infinite]"
                 )}
             />
             {allowEdit && (

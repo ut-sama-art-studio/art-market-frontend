@@ -17,5 +17,6 @@ export function getQueryParam(name: string) {
 export function handleNoProfilePicture(
     profilePictureSrc: string | undefined
 ): string | StaticImageData {
-    return profilePictureSrc || defaultProfile;
+    const picture = profilePictureSrc || defaultProfile;
+    return picture;
 }

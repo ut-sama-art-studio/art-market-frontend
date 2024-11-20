@@ -1,18 +1,16 @@
-import { useAuth } from "@/context/auth-context";
 import { User } from "@/services/users/user-service";
 import Image from "next/image";
 import { useState } from "react";
 
 import { cn, handleNoProfilePicture } from "@/lib/utils";
-import Link from "next/link";
 import { useDebounce } from "@/hooks/use-debounce";
+import { ProfileDropdown } from "./profile-dropdown";
 
 interface NavProfileProps {
     user: User;
 }
 
 export function NavProfileBtn({ user }: NavProfileProps) {
-    const { logout } = useAuth();
     const [isHover, setIsHover] = useState(false);
     const [isClick, setIsClick] = useState(false);
     const debouncedIsHover = useDebounce(isHover, 200); // use debounced to prevent dropdown form immediately closing after user mouse leaves profile icon, since profile icon and dropdown has a gap between, don't want to close dropdown before user hovers to
@@ -52,26 +50,7 @@ export function NavProfileBtn({ user }: NavProfileProps) {
             </div>
 
             {!isClick && debouncedIsHover && (
-                <div
-                    style={{ top: "105%", right: "-10px" }}
-                    className="absolute mt-0 w-fit bg-white shadow-md rounded-md text-sm border "
-                    onClick={handleClick}
-                >
-                    <Link href={`/user/${user.id}`}>
-                        <div className="cursor-pointer px-3 py-2 hover:bg-gray-100 flex justify-center whitespace-nowrap">
-                            View Profile
-                        </div>
-                    </Link>
-
-                    <div className="border-t my-0"></div>
-
-                    <div
-                        className="cursor-pointer px-3 py-2 hover:bg-gray-100 flex justify-center"
-                        onClick={logout}
-                    >
-                        Logout
-                    </div>
-                </div>
+                <ProfileDropdown user={user} handleClick={handleClick} />
             )}
         </div>
     );
