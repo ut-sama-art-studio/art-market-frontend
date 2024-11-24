@@ -38,22 +38,6 @@ export default function ArtistsPage() {
                         }
                     }
                 `);
-                const artistss = [
-                    ...res.artists,
-                    ...res.artists,
-                    ...res.artists,
-                    ...res.artists,
-                    ...res.artists,
-                    ...res.artists,
-                    ...res.artists,
-                    {
-                        id: "123",
-                        name: "123das",
-                        profilePicture: undefined,
-                        bio: "asbd",
-                        role: "director",
-                    },
-                ];
 
                 const rolePriority: Record<string, number> = {
                     director: 1,
@@ -61,9 +45,11 @@ export default function ArtistsPage() {
                     artist: 3,
                 };
 
-                const sortedArtists = artistss.sort((a: Artist, b: Artist) => {
-                    return rolePriority[a.role] - rolePriority[b.role];
-                });
+                const sortedArtists = [...res.artists].sort(
+                    (a: Artist, b: Artist) => {
+                        return rolePriority[a.role] - rolePriority[b.role];
+                    }
+                );
 
                 setArtists(sortedArtists);
             } catch (err) {
@@ -88,15 +74,18 @@ export default function ArtistsPage() {
                 {artists.map((artist, index) => (
                     <Link key={index} href={`/user/${artist.id}`}>
                         <div className="flex flex-col items-center py-3 h-fit hover:shadow-[0_2px_10px_0px_rgba(0,0,0,0.2)] transition-shadow hover:cursor-pointer">
-                            <Image
-                                src={handleNoProfilePicture(
-                                    artist.profilePicture
-                                )}
-                                width={136}
-                                height={136}
-                                alt={`${artist.name}'s profile picture`}
-                                className="object-cover"
-                            />
+                            <div className="w-36 h-36 relative">
+                                <Image
+                                    src={handleNoProfilePicture(
+                                        artist.profilePicture
+                                    )}
+                                    fill
+                                    sizes="144px 144px"
+                                    className="object-cover"
+                                    alt={`${artist.name}'s profile picture`}
+                                />
+                            </div>
+
                             <div className="w-fit flex flex-col items-center">
                                 <h2 className="text-lg font-semibold leading-5 mt-1 px-2 line-clamp-2">
                                     {artist.name}
@@ -113,7 +102,7 @@ export default function ArtistsPage() {
                                 )}
                                 {artist.bio && (
                                     <div className="flex justify-center">
-                                        <p className="text-gray-600 leading-4 line-clamp-2 max-w-36 w-full">
+                                        <p className="text-gray-600 text-sm leading-4 line-clamp-2 max-w-36 w-full">
                                             {artist.bio}
                                         </p>
                                     </div>

@@ -52,7 +52,7 @@ const UserPage = () => {
     }, [id, user]);
 
     if (!queryUser) {
-        return <div>User doesn't exist</div>;
+        return <div>User does not exist</div>;
     }
 
     const onEditProfileSave = async (newUserInfo: Partial<User>) => {
@@ -118,15 +118,19 @@ const UserPage = () => {
 
             <hr className="h-1px my-2 bg-gray-200" />
 
-            {isSelf && isSelfArtist ? (
-                <MerchGrid userId={queryUser.id} isSelf={isSelf} />
-            ) : (
-                <div className="flex flex-col w-full justify-center items-center">
-                    <div className=" text-center mt-4">
-                        Are you an artist, want to upload merch?
+            {isSelf ? (
+                isSelfArtist ? (
+                    <MerchGrid userId={queryUser.id} isSelf={isSelf} />
+                ) : (
+                    <div className="flex flex-col w-full justify-center items-center">
+                        <div className=" text-center mt-4">
+                            Are you an artist, want to upload merch?
+                        </div>
+                        <VerifyArtistDialog />
                     </div>
-                    <VerifyArtistDialog />
-                </div>
+                )
+            ) : (
+                <MerchGrid userId={queryUser.id} isSelf={isSelf} />
             )}
         </div>
     );

@@ -53,14 +53,17 @@ export default function VerifyArtistDialog() {
             );
 
             if (res?.applyArtistRoleToken) {
-                updateContextUser((prevUser: User) => ({
-                    ...prevUser,
-                    role: res.applyArtistRoleToken.role,
-                }));
+                if (user) {
+                    updateContextUser({
+                        ...(user as User),
+                        role: res.applyArtistRoleToken.role,
+                    });
+                }
+
                 setDialogOpen(false);
                 setToken("");
                 toast({
-                    description: `Welcome ${user.name}! You can upload your merch now.`,
+                    description: `Welcome ${user?.name}! You can upload your merch now.`,
                 });
             } else {
                 throw new Error("Invalid response");
@@ -88,7 +91,7 @@ export default function VerifyArtistDialog() {
                     <DialogTitle>Verify Artist Membership</DialogTitle>
                 </DialogHeader>
                 <div className="">
-                    <h2 className="">Don't have a token?</h2>
+                    <h2 className="">Do not have a token?</h2>
                     <p className="text-sm text-gray-500">
                         Please consult an art director for how to get the token.
                     </p>

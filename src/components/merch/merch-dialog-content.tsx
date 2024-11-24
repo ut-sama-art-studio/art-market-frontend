@@ -1,3 +1,5 @@
+"use client";
+
 import { Merch } from "@/services/merch/merch-service";
 import { useEffect, useState } from "react";
 import {
@@ -34,6 +36,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { User, fetchSimpleUserById } from "@/services/users/user-service";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 interface MerchDialogContent {
     merch: Merch;
@@ -49,9 +52,18 @@ export default function MerchDialogContent({
     const { user } = useAuth();
     const [isOwner, setIsOwner] = useState(false);
 
+    const { toast } = useToast();
+
+    const handleEditMerch = () => {
+        toast({
+            variant: "destructive",
+            description: "Sorry, feature coming soon...",
+        });
+    };
+
     useEffect(() => {
         setIsOwner(user?.id === merch.ownerId);
-    }, [user]);
+    }, [user, merch.ownerId]);
 
     return (
         <DialogContent className="max-h-screen min-w-fit p-0 overflow-y-auto border-none">
@@ -62,6 +74,7 @@ export default function MerchDialogContent({
                     merch={merch}
                     isOwner={isOwner}
                     handleDeleteMerch={handleDeleteMerch}
+                    handleEditMerch={handleEditMerch}
                     setIsDialogOpen={setIsDialogOpen}
                 />
             </div>
@@ -148,17 +161,19 @@ function MerchDescription({
     merch,
     isOwner,
     handleDeleteMerch,
+    handleEditMerch,
     setIsDialogOpen,
 }: {
     merch: Merch;
     isOwner: boolean;
     handleDeleteMerch: (merch: Merch) => void;
+    handleEditMerch: (merch: Merch) => void;
     setIsDialogOpen: (isOpen: boolean) => void;
 }) {
     const [owner, setOwner] = useState<Partial<User>>();
 
     useEffect(() => {
-        fetchSimpleUserById(merch.ownerId).then((user) => setOwner(user));
+        fetchSimpleUserById(merch.ownerId).then((user: User) => setOwner(user));
     }, []);
 
     return (
@@ -207,7 +222,7 @@ function MerchDescription({
                 <hr className="my-3" />
 
                 <div>
-                    <p className="text-gray-500">
+                    <p className="text-gray-500 whitespace-pre-wrap max-h-[28vw] overflow-y-auto">
                         {merch.description || "No description available"}
                     </p>
                 </div>
@@ -216,7 +231,11 @@ function MerchDescription({
             {isOwner && (
                 <DialogFooter>
                     <Button variant="default">
-                        <GoPencil className="text-lg mr-2" /> Edit
+                        <GoPencil
+                            className="text-lg mr-2"
+                            onClick={() => handleEditMerch(merch)}
+                        />{" "}
+                        Edit
                     </Button>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
