@@ -1,6 +1,10 @@
 https://utsama-art-studio.vercel.app/
 
-## Tour
+## Tour of the website
+
+### Artists Page 
+![image](https://github.com/user-attachments/assets/e33b0ae8-c156-4316-b718-5d47b799cb9e)
+
 ### User Page
 ![image](https://github.com/user-attachments/assets/c6b910f6-2807-469e-9dd9-1a3e1633f205)
 ![image](https://github.com/user-attachments/assets/e6bcd0be-fdb0-4a72-9a15-f347efed06fb)
