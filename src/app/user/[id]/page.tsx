@@ -95,7 +95,7 @@ const UserPage = () => {
 
     return (
         <div className="flex flex-col md:flex-row justify-center md:justify-start mx-0 lg:mx-32 xl:mx-48 2xl:mx-64 md:px-8">
-            <div className="flex flex-row md:flex-col items-center w-full md:w-64 h-fit">
+            <div className="flex flex-row md:flex-col md:items-center w-full md:w-64 h-fit">
                 <UserProfilePicture
                     user={queryUser}
                     allowEdit={isSelf}

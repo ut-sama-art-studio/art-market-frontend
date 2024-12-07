@@ -85,7 +85,9 @@ export default function ProfileInfo({
                 </>
             ) : (
                 <div className="flex flex-col items-start md:items-center w-full md:w-64">
-                    <div className="text-lg mt-2 font-medium">{user.name}</div>
+                    <div className="text-lg mt-0 md:mt-2 font-medium">
+                        {user.name}
+                    </div>
                     <div className="flex text-sm">
                         <div className="flex items-center text-indigo-500">
                             <FaDiscord className="text-lg mr-1" />
@@ -94,7 +96,7 @@ export default function ProfileInfo({
                     </div>
                     <p
                         className={cn(
-                            "text-sm whitespace-pre-wrap",
+                            "text-sm whitespace-pre-wrap max-h-28 md:max-h-[400px] overflow-y-auto",
                             !user.bio && "opacity-40 text-center"
                         )}
                     >

@@ -66,8 +66,8 @@ export default function MerchDialogContent({
     }, [user, merch.ownerId]);
 
     return (
-        <DialogContent className="max-h-screen min-w-fit p-0 overflow-y-auto border-none">
-            <div className="flex w-fit">
+        <DialogContent className="max-h-screen md:min-w-fit p-0 overflow-y-auto border-none">
+            <div className="flex flex-col md:flex-row w-full md:w-fit">
                 <MerchImages merch={merch} />
 
                 <MerchDescription
@@ -99,8 +99,8 @@ function MerchImages({ merch }: { merch: Merch }) {
     }, [api]);
 
     return (
-        <div className="flex flex-col items-center min-w-fit px-4 py-4">
-            <Carousel className="w-[40vw]" setApi={setApi}>
+        <div className="flex flex-col items-center md:min-w-fit px-0 md:px-4 pt-0 md:py-4">
+            <Carousel className="w-full md:w-[40vw]" setApi={setApi}>
                 <CarouselContent>
                     {merch.images.map((imgUrl: string, index: number) => {
                         return (
@@ -177,51 +177,55 @@ function MerchDescription({
     }, []);
 
     return (
-        <div className="flex flex-col justify-between text-sm w-80 p-4 pt-8 pb-4">
+        <div className="flex flex-col justify-between text-sm w-full md:w-80 p-4 pt-2 md:pt-8 pb-4">
             <div>
-                <div className="my-4">
-                    <p className="text-2xl font-medium">
-                        ${merch.price.toFixed(2)}
-                    </p>
-                    <p className="italic text-gray-500">
-                        {`${merch.type}, ${merch.width} x ${merch.height} ${merch.unit}`}
-                    </p>
+                <div className="flex md:flex-col justify-between">
+                    <div className="mt-0 md:mt-4 mb-4">
+                        <p className="text-2xl font-medium">
+                            ${merch.price.toFixed(2)}
+                        </p>
+                        <p className="italic text-gray-500">
+                            {`${merch.type}, ${merch.width} x ${merch.height} ${merch.unit}`}
+                        </p>
+                    </div>
+
+                    <div>
+                        <DialogHeader>
+                            <DialogTitle className="text-lg font-normal text-end md:text-start">
+                                {merch.name}
+                            </DialogTitle>
+                        </DialogHeader>
+                        {owner && (
+                            <div className="display flex items-center mt-[-8px] md:mt-0">
+                                by
+                                <Link
+                                    href={`/user/${owner.id}`}
+                                    className="w-fit block hover:underline"
+                                    onClick={() => setIsDialogOpen(false)}
+                                >
+                                    <div className="flex items-center">
+                                        <div className="w-8 h-8 md:h-10 md:w-10 rounded-full overflow-hidden relative border border-gray-300 mx-2 mt-1">
+                                            <Image
+                                                src={handleNoProfilePicture(
+                                                    owner?.profilePicture
+                                                )}
+                                                alt="Profile picture"
+                                                fill
+                                                sizes="12 12"
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        {owner.name}
+                                    </div>
+                                </Link>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                <DialogHeader>
-                    <DialogTitle className="text-base font-normal">
-                        {merch.name}
-                    </DialogTitle>
-                </DialogHeader>
-                {owner && (
-                    <div className="display flex items-center">
-                        by
-                        <Link
-                            href={`/user/${owner.id}`}
-                            className="w-fit block hover:underline"
-                            onClick={() => setIsDialogOpen(false)}
-                        >
-                            <div className="flex items-center">
-                                <div className="w-10 h-10 rounded-full overflow-hidden relative border border-gray-300 mx-2 mt-1">
-                                    <Image
-                                        src={handleNoProfilePicture(
-                                            owner?.profilePicture
-                                        )}
-                                        alt="Profile picture"
-                                        fill
-                                        sizes="12 12"
-                                        className="object-cover"
-                                    />
-                                </div>
-                                {owner.name}
-                            </div>
-                        </Link>
-                    </div>
-                )}
+                <hr className="mb-3 md:mt-3" />
 
-                <hr className="my-3" />
-
-                <div>
+                <div className="min-h-32 md:min-h-0">
                     <p className="text-gray-500 whitespace-pre-wrap max-h-[28vw] overflow-y-auto">
                         {merch.description || "No description available"}
                     </p>
@@ -229,43 +233,45 @@ function MerchDescription({
             </div>
 
             {isOwner && (
-                <DialogFooter>
-                    <Button variant="default">
-                        <GoPencil
-                            className="text-lg mr-2"
-                            onClick={() => handleEditMerch(merch)}
-                        />{" "}
-                        Edit
-                    </Button>
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button variant="destructive">
-                                <GoTrash className="text-lg" />
-                            </Button>
-                        </AlertDialogTrigger>
+                <DialogFooter className="mt-2">
+                    <div className="flex justify-end gap-2">
+                        <Button variant="default">
+                            <GoPencil
+                                className="text-lg mr-2"
+                                onClick={() => handleEditMerch(merch)}
+                            />{" "}
+                            Edit
+                        </Button>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="destructive">
+                                    <GoTrash className="text-lg" />
+                                </Button>
+                            </AlertDialogTrigger>
 
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                    Are You REALLY Sure? 🤔
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    This will die if gets killed.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>
-                                    It lives another day
-                                </AlertDialogCancel>
-                                <AlertDialogAction
-                                    variant="destructive"
-                                    onClick={() => handleDeleteMerch(merch)}
-                                >
-                                    Do it
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Are You REALLY Sure? 🤔
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This will die if gets killed.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        It lives another day
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                        variant="destructive"
+                                        onClick={() => handleDeleteMerch(merch)}
+                                    >
+                                        Do it
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </div>
                 </DialogFooter>
             )}
         </div>
