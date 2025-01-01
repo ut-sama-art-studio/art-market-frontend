@@ -10,13 +10,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
+import { MerchType } from "@/services/merch/merch-service";
 
 export interface CreateMerchFormData {
     merchName: string;
     description: string;
     price: number;
     inventory: number;
-    type: string;
+    type: MerchType | undefined;
     height: number;
     width: number;
     unit: string;
@@ -35,7 +36,7 @@ export default function CreateMerchForm({
             description: "",
             price: 0,
             inventory: 0,
-            type: "",
+            type: undefined,
             height: 0,
             width: 0,
             unit: "cm",

@@ -6,19 +6,32 @@ import MerchDialogContent from "./merch-dialog-content";
 
 interface MerchDialogProps {
     merch: Merch;
-    handleDeleteMerch: (merch: Merch) => void;
+    handleDeleteMerch?: (merch: Merch) => void;
+    handleEditMerch?: (merch: Merch) => void;
 }
 
 export default function MerchDialog({
     merch,
     handleDeleteMerch,
+    handleEditMerch,
 }: MerchDialogProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const handleDeleteAndClose = (merch: Merch) => {
-        handleDeleteMerch(merch);
-        setIsDialogOpen(false);
-    };
+    let handleDeleteAndClose;
+    if (handleDeleteMerch) {
+        handleDeleteAndClose = (merch: Merch) => {
+            handleDeleteMerch(merch);
+            setIsDialogOpen(false);
+        };
+    }
+
+    let handleEditAndClose;
+    if (handleEditMerch) {
+        handleEditAndClose = (merch: Merch) => {
+            handleEditMerch(merch);
+            setIsDialogOpen(false);
+        };
+    }
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

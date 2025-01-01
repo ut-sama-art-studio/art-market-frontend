@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { getQueryParam } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
-import MerchPage from "./merch/page";
-import ArtistsPage from "./artists/page";
+import MerchPage from "@/app/merch/page";
 
 const HomePage: React.FC = () => {
     const { user, login } = useAuth();
@@ -25,7 +24,7 @@ const HomePage: React.FC = () => {
 
     return (
         <main>
-            <ArtistsPage />
+            <MerchPage />
         </main>
     );
 };

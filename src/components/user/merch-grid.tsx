@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import {
     Dialog,
@@ -30,7 +30,7 @@ export default function MerchGrid({ userId, isSelf }: MerchGridProps) {
     const { toast } = useToast();
     const [isFormOpen, setIsFormOpen] = useState(false);
 
-    const fetchMerchItems = async () => {
+    const fetchMerchItems = useCallback(async () => {
         try {
             const merchList = await fetchUserMerchItems(userId);
             setMerchList(merchList);
@@ -41,10 +41,11 @@ export default function MerchGrid({ userId, isSelf }: MerchGridProps) {
                 description: "Failed to get merch item.",
             });
         }
-    };
+    }, [userId, toast]);
+
     useEffect(() => {
         fetchMerchItems();
-    }, []);
+    }, [fetchMerchItems]);
 
     const handleAddMerch = async (formData: CreateMerchFormData) => {
         setIsFormOpen(false);
@@ -114,9 +115,7 @@ export default function MerchGrid({ userId, isSelf }: MerchGridProps) {
 
                         <DialogContent className="max-h-screen p-4 overflow-y-auto">
                             <DialogHeader>
-                                <DialogTitle>
-                                    Add a New Merch Item
-                                </DialogTitle>
+                                <DialogTitle>Add a New Merch Item</DialogTitle>
                             </DialogHeader>
                             <CreateMerchForm handleAddMerch={handleAddMerch} />
                         </DialogContent>

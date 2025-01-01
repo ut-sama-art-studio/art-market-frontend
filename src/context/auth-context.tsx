@@ -30,11 +30,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const [user, setUser] = useState<User>();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const login = useCallback(async (token: string) => {
-        await setAuthToken(token);
-        fetchAndSetUser();
-    }, []);
-
     const logout = useCallback(() => {
         console.log("Logout");
         setUser(undefined);
@@ -53,6 +48,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         }
     }, [logout]);
 
+    const login = useCallback(
+        async (token: string) => {
+            await setAuthToken(token);
+            fetchAndSetUser();
+        },
+        [fetchAndSetUser]
+    );
+
     // get the user object from auth token on every page load and refresh
     useEffect(() => {
         // Check if there's an existing token
@@ -60,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         if (token) {
             fetchAndSetUser();
         }
-    }, []);
+    }, [fetchAndSetUser]);
 
     const updateContextUser = useCallback(
         (updatedUser: User) => {

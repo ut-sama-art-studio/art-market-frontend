@@ -13,12 +13,19 @@ export type Merch = {
     description?: string;
     price: number;
     inventory?: number;
-    type: string;
+    type: MerchType;
     width?: number;
     height?: number;
     unit?: string;
     images: string[];
 };
+
+export type MerchType =
+    | "poster"
+    | "postcard"
+    | "keychain"
+    | "sticker"
+    | "other";
 
 // Function to create a new merch item
 export const createMerch = async (
@@ -56,7 +63,7 @@ export const createMerch = async (
             },
         }
     );
-    
+
     if (res?.createMerch) {
         return res.createMerch;
     } else {
@@ -139,5 +146,88 @@ export const fetchUserMerchItems = async (userId: string): Promise<Merch[]> => {
         return res.userMerchItems;
     } else {
         return Promise.reject("Failed to fetch merch items");
+    }
+};
+
+// have to follow sql names
+export type QueryMerchPageArgs = {
+    keyword?: string;
+    type?: MerchType | "";
+    page?: number; // page number
+    pageSize?: number;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc";
+};
+
+export type MerchPage = {
+    items: Merch[];
+    totalItems: number;
+    totalPages: number;
+    currentPage: number;
+    pageSize: number;
+};
+
+const defaultQueryMerchPageArgs: QueryMerchPageArgs = {
+    keyword: "",
+    type: "",
+    page: 1,
+    pageSize: 24,
+    sortBy: "timestamp",
+    sortOrder: "desc",
+};
+export const queryMerchPage = async (
+    filterArgs?: QueryMerchPageArgs
+): Promise<MerchPage> => {
+    filterArgs = { ...defaultQueryMerchPageArgs, ...filterArgs };
+
+    const res = await graphqlQuery(
+        gql`
+            query SearchMerch(
+                $keyword: String
+                $type: String
+                $minPrice: Float
+                $maxPrice: Float
+                $page: Int
+                $pageSize: Int
+                $sortBy: String
+                $sortOrder: String
+            ) {
+                searchMerch(
+                    keyword: $keyword
+                    type: $type
+                    minPrice: $minPrice
+                    maxPrice: $maxPrice
+                    page: $page
+                    pageSize: $pageSize
+                    sortBy: $sortBy
+                    sortOrder: $sortOrder
+                ) {
+                    items {
+                        id
+                        ownerId
+                        name
+                        description
+                        price
+                        inventory
+                        type
+                        width
+                        height
+                        unit
+                        images
+                    }
+                    totalItems
+                    totalPages
+                    currentPage
+                    pageSize
+                }
+            }
+        `,
+        filterArgs
+    );
+
+    if (res?.searchMerch) {
+        return res.searchMerch;
+    } else {
+        return Promise.reject("Failed to fetch merch page");
     }
 };

@@ -36,30 +36,22 @@ import {
 } from "@/components/ui/alert-dialog";
 import { User, fetchSimpleUserById } from "@/services/users/user-service";
 import Link from "next/link";
-import { useToast } from "@/hooks/use-toast";
 
 interface MerchDialogContent {
     merch: Merch;
-    handleDeleteMerch: (merch: Merch) => void;
+    handleDeleteMerch?: (merch: Merch) => void;
+    handleEditMerch?: (merch: Merch) => void;
     setIsDialogOpen: (isOpen: boolean) => void;
 }
 // Displays merch details
 export default function MerchDialogContent({
     merch,
     handleDeleteMerch,
+    handleEditMerch,
     setIsDialogOpen,
 }: MerchDialogContent) {
     const { user } = useAuth();
     const [isOwner, setIsOwner] = useState(false);
-
-    const { toast } = useToast();
-
-    const handleEditMerch = () => {
-        toast({
-            variant: "destructive",
-            description: "Sorry, feature coming soon...",
-        });
-    };
 
     useEffect(() => {
         setIsOwner(user?.id === merch.ownerId);
@@ -166,15 +158,15 @@ function MerchDescription({
 }: {
     merch: Merch;
     isOwner: boolean;
-    handleDeleteMerch: (merch: Merch) => void;
-    handleEditMerch: (merch: Merch) => void;
+    handleDeleteMerch?: (merch: Merch) => void;
+    handleEditMerch?: (merch: Merch) => void;
     setIsDialogOpen: (isOpen: boolean) => void;
 }) {
     const [owner, setOwner] = useState<Partial<User>>();
 
     useEffect(() => {
         fetchSimpleUserById(merch.ownerId).then((user: User) => setOwner(user));
-    }, []);
+    }, [merch.ownerId]);
 
     return (
         <div className="flex flex-col justify-between text-sm w-full md:w-80 p-4 pt-2 md:pt-8 pb-4">
@@ -235,45 +227,59 @@ function MerchDescription({
             {isOwner && (
                 <DialogFooter className="mt-2">
                     <div className="flex justify-end gap-2">
-                        <Button variant="default">
-                            <GoPencil
-                                className="text-lg mr-2"
-                                onClick={() => handleEditMerch(merch)}
-                            />{" "}
-                            Edit
-                        </Button>
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <Button variant="destructive">
-                                    <GoTrash className="text-lg" />
-                                </Button>
-                            </AlertDialogTrigger>
-
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>
-                                        Are You REALLY Sure? 🤔
-                                    </AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        This will die if gets killed.
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>
-                                        It lives another day
-                                    </AlertDialogCancel>
-                                    <AlertDialogAction
-                                        variant="destructive"
-                                        onClick={() => handleDeleteMerch(merch)}
-                                    >
-                                        Do it
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+                        {handleEditMerch &&
+                            getEditMerchBtn(handleEditMerch, merch)}
+                        {handleDeleteMerch &&
+                            getDeleteMerchButton(handleDeleteMerch, merch)}
                     </div>
                 </DialogFooter>
             )}
         </div>
+    );
+}
+function getEditMerchBtn(
+    handleEditMerch: (merch: Merch) => void,
+    merch: Merch
+) {
+    return (
+        <Button variant="default">
+            <GoPencil
+                className="text-lg mr-2"
+                onClick={() => handleEditMerch(merch)}
+            />{" "}
+            Edit
+        </Button>
+    );
+}
+
+function getDeleteMerchButton(
+    handleDeleteMerch: (merch: Merch) => void,
+    merch: Merch
+) {
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button variant="destructive">
+                    <GoTrash className="text-lg" />
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Are You REALLY Sure? 🤔</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This will die if gets killed.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>It lives another day</AlertDialogCancel>
+                    <AlertDialogAction
+                        variant="destructive"
+                        onClick={() => handleDeleteMerch(merch)}
+                    >
+                        Do it
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     );
 }
