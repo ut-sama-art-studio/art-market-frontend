@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuth } from "@/context/auth-context";
-import { handleNoProfilePicture } from "@/lib/utils";
+import { useAuth } from "@/utils/context/auth-context";
+import { handleNoProfilePicture } from "@/utils/utils";
 import { graphqlQuery } from "@/services/graphql/graphql-service";
 import { Role } from "@/services/users/user-service";
 import { gql } from "@apollo/client";

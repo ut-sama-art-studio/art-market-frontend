@@ -18,11 +18,11 @@ import {
     type CarouselApi,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import { cn, handleNoProfilePicture } from "@/lib/utils";
+import { cn, handleNoProfilePicture } from "@/utils/utils";
 import { Button } from "../ui/button";
 import { GoTrash } from "react-icons/go";
 import { GoPencil } from "react-icons/go";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/utils/context/auth-context";
 import {
     AlertDialog,
     AlertDialogAction,

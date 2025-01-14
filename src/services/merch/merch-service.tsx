@@ -150,16 +150,16 @@ export const fetchUserMerchItems = async (userId: string): Promise<Merch[]> => {
 };
 
 // have to follow sql names
-export type QueryMerchPageArgs = {
-    keyword?: string;
-    type?: MerchType | "";
-    page?: number; // page number
-    pageSize?: number;
-    sortBy?: string;
-    sortOrder?: "asc" | "desc";
+export interface QueryMerchPageArgs {
+    keyword: string;
+    type: MerchType | "";
+    page: number; // page number
+    pageSize: number;
+    sortBy: string;
+    sortOrder: "asc" | "desc";
 };
 
-export type MerchPage = {
+export interface MerchPage {
     items: Merch[];
     totalItems: number;
     totalPages: number;
@@ -167,16 +167,17 @@ export type MerchPage = {
     pageSize: number;
 };
 
-const defaultQueryMerchPageArgs: QueryMerchPageArgs = {
+export const defaultQueryMerchPageArgs: QueryMerchPageArgs = {
     keyword: "",
     type: "",
     page: 1,
-    pageSize: 24,
+    pageSize: 8,
     sortBy: "timestamp",
     sortOrder: "desc",
 };
+
 export const queryMerchPage = async (
-    filterArgs?: QueryMerchPageArgs
+    filterArgs?: Partial<QueryMerchPageArgs>
 ): Promise<MerchPage> => {
     filterArgs = { ...defaultQueryMerchPageArgs, ...filterArgs };
 

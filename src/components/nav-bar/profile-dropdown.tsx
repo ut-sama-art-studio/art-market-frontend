@@ -1,4 +1,4 @@
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/utils/context/auth-context";
 import { User } from "@/services/users/user-service";
 import Link from "next/link";
 

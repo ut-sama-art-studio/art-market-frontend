@@ -2,7 +2,7 @@ import React, { Ref, RefObject, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { User } from "@/services/users/user-service";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 import { FaDiscord } from "react-icons/fa";
 

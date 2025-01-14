@@ -1,7 +1,7 @@
 import React, { RefObject, useRef, useState } from "react";
 import Image from "next/image";
 import { RiImageAddLine } from "react-icons/ri";
-import { cn, handleNoProfilePicture } from "@/lib/utils";
+import { cn, handleNoProfilePicture } from "@/utils/utils";
 
 import { User } from "@/services/users/user-service";
 

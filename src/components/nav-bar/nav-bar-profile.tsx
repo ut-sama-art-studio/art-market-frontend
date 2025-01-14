@@ -2,7 +2,7 @@ import { User } from "@/services/users/user-service";
 import Image from "next/image";
 import { useState } from "react";
 
-import { cn, handleNoProfilePicture } from "@/lib/utils";
+import { cn, handleNoProfilePicture } from "@/utils/utils";
 import { useDebounce } from "@/hooks/use-debounce";
 import { ProfileDropdown } from "./profile-dropdown";
 

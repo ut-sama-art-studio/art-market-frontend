@@ -17,7 +17,7 @@ import {
     fetchUserMerchItems,
 } from "@/services/merch/merch-service";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import MerchDialog from "../merch/merch-dialog";
 import { error } from "console";
 

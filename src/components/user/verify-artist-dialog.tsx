@@ -17,7 +17,7 @@ import {
     graphqlQuery,
 } from "@/services/graphql/graphql-service";
 import { gql } from "@apollo/client";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/utils/context/auth-context";
 import { User } from "@/services/users/user-service";
 
 export default function VerifyArtistDialog() {

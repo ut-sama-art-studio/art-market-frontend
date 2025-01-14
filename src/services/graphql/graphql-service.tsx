@@ -5,7 +5,7 @@ import {
     gql,
     DocumentNode,
 } from "@apollo/client";
-import { apiUrl } from "@/lib/configs";
+import { apiUrl } from "@/utils/configs";
 import { getAuthToken } from "../auth/auth-service";
 import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
 

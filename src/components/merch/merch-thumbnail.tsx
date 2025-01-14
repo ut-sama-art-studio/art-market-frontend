@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import defaultProfile from "@/../public/images/default-profile-pic.jpg";
 import { Merch } from "@/services/merch/merch-service";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 interface MerchThumbnailProps {
     merch: Merch;

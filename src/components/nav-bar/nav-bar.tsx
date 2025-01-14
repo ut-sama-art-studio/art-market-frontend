@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import ArtMarketTextLogo from "@/components/ui/text-logo";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/utils/context/auth-context";
 import { NavProfileBtn } from "@/components/nav-bar/nav-bar-profile";
 
 import { FaRegCalendarAlt } from "react-icons/fa";

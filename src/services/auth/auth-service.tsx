@@ -1,4 +1,4 @@
-import { apiUrl } from "@/lib/configs";
+import { apiUrl } from "@/utils/configs";
 
 export async function discordLogin() {
     window.location.href = apiUrl + "/auth/discord/login";
