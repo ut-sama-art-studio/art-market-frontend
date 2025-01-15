@@ -157,7 +157,7 @@ export interface QueryMerchPageArgs {
     pageSize: number;
     sortBy: string;
     sortOrder: "asc" | "desc";
-};
+}
 
 export interface MerchPage {
     items: Merch[];
@@ -165,13 +165,13 @@ export interface MerchPage {
     totalPages: number;
     currentPage: number;
     pageSize: number;
-};
+}
 
 export const defaultQueryMerchPageArgs: QueryMerchPageArgs = {
     keyword: "",
     type: "",
     page: 1,
-    pageSize: 8,
+    pageSize: 12,
     sortBy: "timestamp",
     sortOrder: "desc",
 };

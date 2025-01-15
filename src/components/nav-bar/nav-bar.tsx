@@ -40,19 +40,28 @@ export const NavBar = () => {
             </div>
             <ul className="flex space-x-12 items-center">
                 <li>
-                    <Link href="/merch" className="flex items-center">
+                    <Link
+                        href="/merch"
+                        className="flex items-center hover:text-blue-400 transition-colors"
+                    >
                         <IoCompassOutline className="text-xl" />
                         Merch
                     </Link>
                 </li>
                 <li>
-                    <Link href="/artists" className="flex items-center">
+                    <Link
+                        href="/artists"
+                        className="flex items-center hover:text-blue-400 transition-colors"
+                    >
                         Artists
                     </Link>
                 </li>
                 {(user?.role == "admin" || user?.role == "director") && (
                     <li>
-                        <Link href="/admin" className="flex items-center">
+                        <Link
+                            href="/admin"
+                            className="flex items-center hover:text-blue-400 transition-colors"
+                        >
                             Admin
                         </Link>
                     </li>
