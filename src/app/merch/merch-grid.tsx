@@ -1,5 +1,11 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+
 import MerchPageLoadingText from "@/components/merch-page/merch-page-loading-text";
 import MerchDialog from "@/components/merch/merch-dialog";
 import CustomPagination from "@/components/ui/customPagination";
@@ -9,42 +15,20 @@ import {
     queryMerchPage,
     QueryMerchPageArgs,
 } from "@/services/merch/merch-service";
-import { useQuery } from "@tanstack/react-query";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
 
 export default function MerchGrid() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    const [queryArgs, setQueryArgs] = useState<QueryMerchPageArgs>(
-        defaultQueryMerchPageArgs
-    );
+    const queryArgs = useSelector((state: RootState) => state.merchQuery);
 
     const handlePageChange = (page: number) => {
-        // Query with new url when search and pagination for borwser history
+        // Query with new url when search and pagination for browser history
         const params = new URLSearchParams(searchParams);
         params.set("page", page.toString());
         router.push(`${pathname}/?${params.toString()}`);
     };
-
-    // Sync queryArgs with URL searchParams
-    useEffect(() => {
-        const page = parseInt(
-            searchParams.get("page") ||
-                defaultQueryMerchPageArgs.page.toString(),
-            10
-        );
-        const keyword =
-            searchParams.get("keyword") || defaultQueryMerchPageArgs.keyword;
-
-        setQueryArgs((prev) => ({
-            ...prev,
-            page,
-            keyword,
-        }));
-    }, [searchParams]);
 
     // Fetch merch data using React Query
     const { data, isError, isLoading } = useQuery({

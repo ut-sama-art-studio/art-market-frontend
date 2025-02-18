@@ -1,6 +1,6 @@
 .PHONY: deploy test run build
 
-deploy:
+deploy: build
 	@vercel --prod
 
 test:

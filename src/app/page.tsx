@@ -21,13 +21,9 @@ const HomePage: React.FC = () => {
             );
             login(token);
         }
-    }, [login]);
+    }, [login, searchParams]);
 
-    return (
-        <main>
-            <MerchPage />
-        </main>
-    );
+    return <MerchPage />;
 };
 
 export default HomePage;

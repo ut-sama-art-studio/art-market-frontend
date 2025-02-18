@@ -6,26 +6,27 @@ import {
     QueryMerchPageArgs,
 } from "@/services/merch/merch-service";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PiMagnifyingGlass } from "react-icons/pi";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { setKeyword, setQueryArgs } from "@/store/merch-query-slice";
 
 export default function MerchSearchBar() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const router = useRouter();
+    const dispatch = useDispatch();
 
-    const initialKeyword =
-        searchParams.get("keyword") || defaultQueryMerchPageArgs.keyword; // Incase user loads a history that already has a keyword
-    const [searchKeyword, setSearchKeyword] = useState(initialKeyword);
+    const queryArgs = useSelector((state: RootState) => state.merchQuery);
 
-    const debouncedSearchKeyword = useDebounce(searchKeyword, 500);
-    useEffect(() => {
-        handleSearchBarSubmit();
-    }, [debouncedSearchKeyword]);
-
-    const [queryArgs, setQueryArgs] = useState<QueryMerchPageArgs>(
-        defaultQueryMerchPageArgs
+    // Handle loading a url including keyword search param directly
+    const [searchKeyword, setSearchKeyword] = useState(
+        searchParams.get("keyword") || queryArgs.keyword
     );
+    const [isKeywordChange, setIsKeywordChange] = useState(false);
+    const isKeywordChangeDebounced = useDebounce(isKeywordChange, 500);
 
     // Sync queryArgs with URL searchParams
     useEffect(() => {
@@ -37,34 +38,45 @@ export default function MerchSearchBar() {
         const keyword =
             searchParams.get("keyword") || defaultQueryMerchPageArgs.keyword;
 
-        setQueryArgs((prev) => ({
-            ...prev,
-            page,
-            searchKeyword,
-        }));
+        dispatch(setQueryArgs({ page, keyword }));
         setSearchKeyword(keyword);
-    }, [searchParams]);
+    }, [searchParams, dispatch]);
 
-    const queryPageWithNewUrl = (args: QueryMerchPageArgs) => {
-        // Query with new url when search and pagination for borwser history
-        const params = new URLSearchParams(searchParams);
-        params.set("page", args.page.toString());
-        args.keyword
-            ? params.set("keyword", args.keyword)
-            : params.delete("keyword");
-        router.replace(`${pathname}/?${params.toString()}`);
+    const queryPageWithNewUrl = useCallback(
+        (args: QueryMerchPageArgs) => {
+            // Query with new url when search and pagination for browser history
+            const params = new URLSearchParams(searchParams);
+            params.set("page", args.page.toString());
+            searchKeyword
+                ? params.set("keyword", searchKeyword)
+                : params.delete("keyword");
+
+            router.push(`${pathname}/?${params.toString()}`);
+            setIsKeywordChange(false);
+        },
+        [pathname, router, searchParams, searchKeyword]
+    );
+
+    const handleSearchBarOnChange = (e: any) => {
+        setSearchKeyword(e.target.value);
+        setIsKeywordChange(true);
     };
 
-    const handleSearchBarSubmit = (
-        event?: React.FormEvent<HTMLFormElement>
-    ) => {
-        event?.preventDefault();
-        queryPageWithNewUrl({
-            ...defaultQueryMerchPageArgs,
-            keyword: searchKeyword,
-            page: 1, // Reset to the first page for a new search
-        });
-    };
+    const handleSearchBarSubmit = useCallback(
+        (event?: React.FormEvent<HTMLFormElement>) => {
+            event?.preventDefault();
+            queryPageWithNewUrl({
+                ...defaultQueryMerchPageArgs,
+                keyword: searchKeyword,
+                page: 1, // Reset to the first page for a new search
+            });
+        },
+        [queryPageWithNewUrl, searchKeyword]
+    );
+
+    useEffect(() => {
+        if (isKeywordChangeDebounced) handleSearchBarSubmit();
+    }, [isKeywordChangeDebounced, handleSearchBarSubmit]);
 
     return (
         <div className="flex justify-center items-center w-full mb-4">
@@ -83,7 +95,7 @@ export default function MerchSearchBar() {
 
                 <input
                     placeholder="Search for merch..."
-                    onChange={(e) => setSearchKeyword(e.target.value)}
+                    onChange={(e) => handleSearchBarOnChange(e)}
                     value={searchKeyword}
                     className="text-center w-full pb-[2px] outline-none focus:outline-none border-b-[1px] border-gray-300 focus:border-gray-600 transition-all focus:placeholder-transparent"
                 />
