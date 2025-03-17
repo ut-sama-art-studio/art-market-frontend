@@ -7,7 +7,6 @@ import {
     DialogHeader,
     DialogTitle,
     DialogFooter,
-    DialogDescription,
 } from "@/components/ui/dialog";
 import {
     Carousel,
@@ -18,7 +17,7 @@ import {
     type CarouselApi,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import { cn, handleNoProfilePicture } from "@/utils/utils";
+import { cn } from "@/utils/utils";
 import { Button } from "../ui/button";
 import { GoTrash } from "react-icons/go";
 import { GoPencil } from "react-icons/go";
@@ -35,7 +34,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { User, fetchSimpleUserById } from "@/services/users/user-service";
-import Link from "next/link";
+import MerchOwnerLink from "./merch-owner-link";
 
 interface MerchDialogContent {
     merch: Merch;
@@ -188,29 +187,10 @@ function MerchDescription({
                             </DialogTitle>
                         </DialogHeader>
                         {owner && (
-                            <div className="display flex items-center mt-[-8px] md:mt-0">
-                                by
-                                <Link
-                                    href={`/user/${owner.id}`}
-                                    className="w-fit block hover:underline"
-                                    onClick={() => setIsDialogOpen(false)}
-                                >
-                                    <div className="flex items-center">
-                                        <div className="w-8 h-8 md:h-10 md:w-10 rounded-full overflow-hidden relative border border-gray-300 mx-2 mt-1">
-                                            <Image
-                                                src={handleNoProfilePicture(
-                                                    owner?.profilePicture
-                                                )}
-                                                alt="Profile picture"
-                                                fill
-                                                sizes="12 12"
-                                                className="object-cover"
-                                            />
-                                        </div>
-                                        {owner.name}
-                                    </div>
-                                </Link>
-                            </div>
+                            <MerchOwnerLink
+                                owner={owner}
+                                handleLinkClick={() => setIsDialogOpen(false)}
+                            />
                         )}
                     </div>
                 </div>
@@ -237,6 +217,7 @@ function MerchDescription({
         </div>
     );
 }
+
 function getEditMerchBtn(
     handleEditMerch: (merch: Merch) => void,
     merch: Merch
