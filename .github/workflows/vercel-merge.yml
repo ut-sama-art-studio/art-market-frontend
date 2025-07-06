@@ -1,5 +1,4 @@
-vercel-merge.yml
-name: Deploy to vercel on merge
+name: Deploy to Vercel on merge
 on:
   push:
     branches:
