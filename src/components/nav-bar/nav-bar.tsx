@@ -82,7 +82,12 @@ export const NavBar = () => {
                 ) : (
                     !isLoginPage && (
                         <li>
-                            <Link href="/login">Login</Link>
+                            <Link
+                                href="/login"
+                                className="flex items-center hover:text-blue-400 transition-colors"
+                            >
+                                Login
+                            </Link>
                         </li>
                     )
                 )}
