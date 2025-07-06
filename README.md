@@ -27,3 +27,6 @@ Run the development server:
 ```bash
 npm run dev
 ```
+
+## Dev process: 
+Auto deployment on push to `main` branch
